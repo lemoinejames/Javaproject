@@ -1,0 +1,169 @@
+package domain;
+
+import java.util.Scanner;
+
+/**
+ * Représente un set (une manche) dans un match de tennis.
+ * Gère le mode auto/manuel, la règle du set décisif et la collecte de stats.
+ * @author VotreNom
+ * @version 1.6 (Final - Ajout Stats)
+ */
+public class SetTennis {
+
+    private Joueur joueur1;
+    private Joueur joueur2;
+    private int jeuxGagnesJoueur1;
+    private int jeuxGagnesJoueur2;
+    private Joueur vainqueur;
+    private Arbitre arbitre;
+    private Joueur premierServeurDuSet;
+    private boolean estSetDecisif; 
+
+    public SetTennis(Joueur joueur1, Joueur joueur2, Arbitre arbitre, Joueur premierServeur, boolean estSetDecisif) {
+        this.joueur1 = joueur1;
+        this.joueur2 = joueur2;
+        this.arbitre = arbitre;
+        this.premierServeurDuSet = premierServeur;
+        this.estSetDecisif = estSetDecisif;
+        this.jeuxGagnesJoueur1 = 0;
+        this.jeuxGagnesJoueur2 = 0;
+        this.vainqueur = null;
+    }
+
+    // --- 1. MODE AUTOMATIQUE (Corrigé) ---
+    /**
+     * CORRIGÉ : Accepte les stats du match pour les passer au Jeu.
+     */
+    public void jouerSet(boolean showDetails, Statistiques statsJ1, Statistiques statsJ2) {
+        if (showDetails) System.out.println("\n\n#################### DÉBUT DU SET ####################");
+        Joueur serveurActuel = this.premierServeurDuSet; 
+        while (vainqueur == null) {
+            
+            Jeu jeuActuel; 
+            
+            if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && !this.estSetDecisif) {
+                // --- TIE-BREAK ---
+                if (showDetails) System.out.println("\n--- JEU DÉCISIF (TIE-BREAK) ---");
+                jeuActuel = new Jeu(serveurActuel, (serveurActuel == joueur1) ? joueur2 : joueur1, arbitre);
+                
+                // CORRECTION : Passer les stats (dans le bon ordre)
+                if (serveurActuel == joueur1) {
+                    jeuActuel.jouerJeu(this, showDetails, statsJ1, statsJ2);
+                } else {
+                    jeuActuel.jouerJeu(this, showDetails, statsJ2, statsJ1);
+                }
+                
+                if (jeuActuel.getVainqueur() == joueur1) jeuxGagnesJoueur1++;
+                else jeuxGagnesJoueur2++;
+                
+            } else {
+                // --- JEU NORMAL ---
+                if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && this.estSetDecisif) {
+                    if (showDetails) System.out.println("\n--- PAS DE TIE-BREAK (Set Décisif) ---");
+                }
+                Joueur receveurActuel = (serveurActuel == joueur1) ? joueur2 : joueur1;
+                jeuActuel = new Jeu(serveurActuel, receveurActuel, arbitre);
+
+                // CORRECTION : Passer les stats (dans le bon ordre)
+                if (serveurActuel == joueur1) {
+                    jeuActuel.jouerJeu(this, showDetails, statsJ1, statsJ2);
+                } else {
+                    jeuActuel.jouerJeu(this, showDetails, statsJ2, statsJ1);
+                }
+
+                if (jeuActuel.getVainqueur() == joueur1) jeuxGagnesJoueur1++;
+                else jeuxGagnesJoueur2++;
+                
+                serveurActuel = receveurActuel;
+            }
+            
+            if (showDetails) {
+                arbitre.annoncerVainqueurJeu(jeuActuel, this);
+            }
+            
+            verifierVainqueurSet();
+        }
+        if (showDetails) System.out.println("#################### FIN DU SET ####################");
+    }
+
+    // --- 2. MODE MANUEL (Corrigé) ---
+    /**
+     * CORRIGÉ : Accepte les stats du match pour les passer au Jeu.
+     */
+    public void jouerSet(Scanner scanner, Statistiques statsJ1, Statistiques statsJ2) {
+        System.out.println("\n\n#################### DÉBUT DU SET ####################");
+        Joueur serveurActuel = this.premierServeurDuSet; 
+
+        while (vainqueur == null) {
+            
+            Jeu jeuActuel; 
+
+            if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && !this.estSetDecisif) {
+                // --- TIE-BREAK ---
+                System.out.println("\n--- JEU DÉCISIF (TIE-BREAK) ---");
+                jeuActuel = new Jeu(serveurActuel, (serveurActuel == joueur1) ? joueur2 : joueur1, arbitre);
+
+                // CORRECTION : Passer les stats (dans le bon ordre)
+                if (serveurActuel == joueur1) {
+                    jeuActuel.jouerJeu(this, scanner, statsJ1, statsJ2);
+                } else {
+                    jeuActuel.jouerJeu(this, scanner, statsJ2, statsJ1);
+                }
+                
+                if (jeuActuel.getVainqueur() == joueur1) jeuxGagnesJoueur1++;
+                else jeuxGagnesJoueur2++;
+                
+            } else {
+                // --- JEU NORMAL ---
+                if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && this.estSetDecisif) {
+                    System.out.println("\n--- PAS DE TIE-BREAK (Set Décisif) ---");
+                }
+                Joueur receveurActuel = (serveurActuel == joueur1) ? joueur2 : joueur1;
+                jeuActuel = new Jeu(serveurActuel, receveurActuel, arbitre);
+
+                // CORRECTION : Passer les stats (dans le bon ordre)
+                if (serveurActuel == joueur1) {
+                    jeuActuel.jouerJeu(this, scanner, statsJ1, statsJ2);
+                } else {
+                    jeuActuel.jouerJeu(this, scanner, statsJ2, statsJ1);
+                }
+
+                if (jeuActuel.getVainqueur() == joueur1) jeuxGagnesJoueur1++;
+                else jeuxGagnesJoueur2++;
+                
+                serveurActuel = receveurActuel;
+            }
+            
+            arbitre.annoncerVainqueurJeu(jeuActuel, this);
+
+            verifierVainqueurSet();
+        }
+        System.out.println("#################### FIN DU SET ####################");
+    }
+
+    // --- LOGIQUE COMMUNE (Inchangée) ---
+    private void verifierVainqueurSet() {
+        if (this.estSetDecisif) {
+            if ((jeuxGagnesJoueur1 >= 6 && jeuxGagnesJoueur1 >= jeuxGagnesJoueur2 + 2)) {
+                this.vainqueur = joueur1;
+            } else if ((jeuxGagnesJoueur2 >= 6 && jeuxGagnesJoueur2 >= jeuxGagnesJoueur1 + 2)) {
+                this.vainqueur = joueur2;
+            }
+        } else {
+            if ((jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur1 >= jeuxGagnesJoueur2 + 2) || (jeuxGagnesJoueur1 == 7 && jeuxGagnesJoueur2 == 5)) {
+                this.vainqueur = joueur1;
+            } else if ((jeuxGagnesJoueur2 == 6 && jeuxGagnesJoueur2 >= jeuxGagnesJoueur1 + 2) || (jeuxGagnesJoueur2 == 7 && jeuxGagnesJoueur1 == 5)) {
+                this.vainqueur = joueur2;
+            } else if (jeuxGagnesJoueur1 == 7 && jeuxGagnesJoueur2 == 6) {
+                this.vainqueur = joueur1;
+            } else if (jeuxGagnesJoueur2 == 7 && jeuxGagnesJoueur1 == 6) {
+                this.vainqueur = joueur2;
+            }
+        }
+    }
+
+    // --- GETTERS (Inchangés) ---
+    public Joueur getVainqueur() { return vainqueur; }
+    public int getJeuxGagnesJoueur1() { return jeuxGagnesJoueur1; }
+    public int getJeuxGagnesJoueur2() { return jeuxGagnesJoueur2; }
+}
