@@ -18,6 +18,8 @@ public class Statistiques {
     private int nbAces;
     private int nbDoublesFautes;
     private int nbPointsRemportes;
+    private int nbPremierServices;
+    private int nbSecondServices;
     private int nbBallesDeBreak;
     private int nbBallesDeBreakRemportees;
     private double vitesseMoyennePremierService;
@@ -36,6 +38,8 @@ public class Statistiques {
         this.nbAces = 0;
         this.nbDoublesFautes = 0;
         this.nbPointsRemportes = 0;
+        this.nbPremierServices = 0;
+        this.nbSecondServices = 0;
         this.nbBallesDeBreak = 0;
         this.nbBallesDeBreakRemportees = 0;
         this.vitesseMoyennePremierService = 0.0;
@@ -46,10 +50,15 @@ public class Statistiques {
         this.totalGains = 0.0;
     }
 
-    // --- MÉTHODES UTILES (pour incrémenter facilement) ---
 
     public void incrementerAces() {
         this.nbAces++;
+    }
+    public void incrementerPremierServices() {
+        this.nbPremierServices++;
+    }
+    public void incrementerSecondServices() {
+        this.nbSecondServices++;
     }
 
     public void incrementerDoublesFautes() {
@@ -81,7 +90,6 @@ public class Statistiques {
                 '}';
     }
     
-    //<editor-fold desc="Getters et Setters">
     public int getNbAces() {
         return nbAces;
     }

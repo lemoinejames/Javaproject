@@ -1,13 +1,11 @@
 package domain;
 
-import domain.enums.Categorie;
 import domain.enums.Genre;
 import domain.enums.MainDeJeu;
-import domain.enums.Niveau;
 import domain.enums.Surface;
-import exceptions.SaisieInvalideException; // Importer l'exception
+import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.ArrayList; // Importer l'exception
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;

@@ -4,15 +4,9 @@ import domain.enums.Genre;
 import domain.enums.MainDeJeu;
 import java.time.LocalDate;
 
-/**
- * Représente un joueur de tennis.
- * Hérite de Personne et implémente ComportementSpectateur.
- * @author VotreNom
- * @version 1.2 (Correction setTenue)
- */
+
 public class Joueur extends Personne implements ComportementSpectateur {
 
-    // --- ATTRIBUTS SPÉCIFIQUES AU JOUEUR ---
     private static int compteurClassement = 0;
     private MainDeJeu main;
     private String sponsor;
@@ -22,7 +16,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
     private String tenue; 
     private Statistiques statsCarriere;
 
-    // --- CONSTRUCTEUR ---
+    
     public Joueur(String nomNaissance, String prenom, LocalDate dateNaissance, String lieuNaissance,
                   String nationalite, int taille, int poids, Genre genre,
                   MainDeJeu main, String sponsor, String entraineur) {
@@ -42,7 +36,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
         }
     }
 
-    // --- MÉTIERS (ACTIONS) ---
+    
 
     public void servir() {
         System.out.println(getPrenom() + " se prépare à servir...");
@@ -50,7 +44,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
 
     public void appelerArbitre(Arbitre arbitre) {
         System.out.println(getPrenom() + " lève la main et appelle l'arbitre !");
-        arbitre.deciderLitige(this); // 'this' est le joueur qui appelle
+        arbitre.deciderLitige(this); 
     }
 
     public void boire() {
@@ -71,7 +65,6 @@ public class Joueur extends Personne implements ComportementSpectateur {
         return super.toString() + " | Classement: " + this.classement;
     }
     
-    // --- AJOUT : IMPLÉMENTATION DE L'INTERFACE COMPORTEMENT SPECTATEUR ---
     
     @Override
     public void applaudir() {
@@ -93,7 +86,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
         System.out.println(getPrenom() + " " + getNomCourant() + " se repose les yeux dans les tribunes.");
     }
     
-    //<editor-fold desc="Getters et Setters">
+  
     public MainDeJeu getMain() { return main; }
     public void setMain(MainDeJeu main) { this.main = main; }
     public String getSponsor() { return sponsor; }
@@ -106,10 +99,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
     public void setReputation(String reputation) { this.reputation = reputation; }
     public String getTenue() { return tenue; }
 
-    /**
-     * CORRIGÉ : Le joueur "annonce" son changement de tenue,
-     * comme demandé par le cahier des charges.
-     */
+   
     public void setTenue(String tenue) {
         this.tenue = tenue;
         System.out.println(getPrenom() + " " + getNomCourant() + " annonce un changement de tenue !");
@@ -117,5 +107,4 @@ public class Joueur extends Personne implements ComportementSpectateur {
     
     public Statistiques getStatsCarriere() { return statsCarriere; }
     public void setStatsCarriere(Statistiques statsCarriere) { this.statsCarriere = statsCarriere; }
-    //</editor-fold>
 }

@@ -5,12 +5,8 @@ import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
 import java.util.Random;
 
-/**
- * @version 1.4 (Correction nom annonce)
- */
 public class Arbitre extends Personne {
-    // ... (constructeur et autres méthodes inchangés)
-//<editor-fold desc="Constructeur et autres méthodes (inchangés)">
+    
     private String humeur;
 
     public Arbitre(String nomNaissance, String prenom, LocalDate dateNaissance, String lieuNaissance,
@@ -47,36 +43,26 @@ public class Arbitre extends Personne {
             );
         }
     }
-//</editor-fold>
-
-    /**
-     * CORRIGÉ : Annonce le nom du vainqueur du jeu.
-     */
+    
     public void annoncerVainqueurJeu(Jeu jeu, SetTennis set) {
         if (jeu.getVainqueur() != null) {
             System.out.println(
-                // CORRECTION : Utilise getPrenom() pour afficher "Auto_63" au lieu de "Joueur_H"
                 "[" + getPrenom() + "] : Jeu " + jeu.getVainqueur().getPrenom() +
                 ". Score du set : " + set.getJeuxGagnesJoueur1() + " - " + set.getJeuxGagnesJoueur2()
             );
         }
     }
     
-    /**
-     * CORRIGÉ : Annonce le vainqueur du set.
-     */
+   
     public void annoncerVainqueurSet(SetTennis set, Match match, boolean showDetails) {
         if (set.getVainqueur() != null && showDetails) { 
             System.out.println(
-                // CORRECTION : Utilise getPrenom()
                 "\n[" + getPrenom() + "] : Set remporté par " + set.getVainqueur().getPrenom() +
                 ". Score du match : " + match.getSetsGagnesJoueur1() + " - " + match.getSetsGagnesJoueur2()
             );
         }
     }
 
-    // ... (getters/setters inchangés)
-//<editor-fold desc="Getters et Setters (inchangés)">
     @Override
     public String toString() {
         return super.toString() + " [Arbitre]";
@@ -93,5 +79,5 @@ public class Arbitre extends Personne {
         this.humeur = humeur;
         System.out.println("L'humeur de l'arbitre " + getNomCourant() + " est maintenant : " + humeur);
     }
-//</editor-fold>
+
 }

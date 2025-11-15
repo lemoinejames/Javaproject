@@ -5,54 +5,42 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- * Représente un seul échange (un point) dans un jeu de tennis.
- * Gère le mode auto/manuel, le litige, et la collecte des stats de match.
- *
- * @author VotreNom
- * @version 1.4 (Final - Ajout Stats)
- */
+
 public class Echange {
 
-    private Joueur joueurAuService;
-    private Joueur receveur;
-    private Arbitre arbitre;
+    private final Joueur joueurAuService;
+    private final Joueur receveur;
+    private final Arbitre arbitre;
     private StatutService statutService;
     private int nombreDeServices;
     private Joueur vainqueur;
-    private Random rand = new Random();
-
-    // --- AJOUT : Attributs pour les statistiques ---
+    private final Random rand = new Random();
     private Statistiques statsServeur;
     private Statistiques statsReceveur;
 
-    /**
-     * CORRIGÉ : Le constructeur accepte maintenant les objets Statistiques.
-     */
+    
     public Echange(Joueur joueurAuService, Joueur receveur, Arbitre arbitre, Statistiques statsServeur, Statistiques statsReceveur) {
         this.joueurAuService = joueurAuService;
         this.receveur = receveur;
         this.arbitre = arbitre;
         this.nombreDeServices = 0;
         this.vainqueur = null;
-        
-        // --- AJOUT : Assignation des stats ---
+        this.statutService = null;
         this.statsServeur = statsServeur;
         this.statsReceveur = statsReceveur;
     }
 
-    // -----------------------------------------------------------------
-    // --- 1. MODE AUTOMATIQUE (Corrigé avec Stats) ---
-    // -----------------------------------------------------------------
+    // Mode AUTO
     
     public void jouer(boolean showDetails) {
         this.nombreDeServices = 1;
         this.statutService = simulerService(); 
+        this.statsServeur.incrementerPremierServices();
 
         switch (this.statutService) {
             case ACE: 
                 if(showDetails) System.out.println("ACE!");
-                this.statsServeur.incrementerAces(); // <-- MISE À JOUR STATS
+                this.statsServeur.incrementerAces(); 
                 this.vainqueur = this.joueurAuService; 
                 break;
             case LET: 
@@ -73,11 +61,11 @@ public class Echange {
     private void jouerDeuxiemeBalle(boolean showDetails) {
         this.nombreDeServices = 2;
         this.statutService = simulerService(); 
-
+        this.statsServeur.incrementerSecondServices();
         switch (this.statutService) {
             case ACE: 
                 if(showDetails) System.out.println("ACE (2e balle)!");
-                this.statsServeur.incrementerAces(); // <-- MISE À JOUR STATS
+                this.statsServeur.incrementerAces(); 
                 this.vainqueur = this.joueurAuService; 
                 break;
             case LET: 
@@ -86,19 +74,18 @@ public class Echange {
                 break;
             case FAUTE:
                 if(showDetails) System.out.println("DOUBLE FAUTE!");
-                this.statsServeur.incrementerDoublesFautes(); // <-- MISE À JOUR STATS
-                this.statutService = StatutService.DOUBLE_FAUTE;
+                this.statsServeur.incrementerDoublesFautes(); 
+                this.statutService= StatutService.DOUBLE_FAUTE;
                 this.vainqueur = this.receveur;
                 break;
             case CORRECT: 
-                if(showDetails) System.out.println("Service correct (2e balle)...");
+                if(showDetails) System.out.println("Service correct (2e balle)");
                 simulerVainqueurEchange(showDetails); 
                 break;
         }
     }
 
-    // ... (simulerVainqueurEchange et simulerService sont inchangés)
-    //<editor-fold desc="Méthodes de simulation auto (inchangées)">
+
     private void simulerVainqueurEchange(boolean showDetails) {
         this.vainqueur = rand.nextBoolean() ? this.joueurAuService : this.receveur;
         if(showDetails) System.out.println("Point remporté par " + this.vainqueur.getPrenom());
@@ -106,17 +93,14 @@ public class Echange {
     
     private StatutService simulerService() {
         int r = rand.nextInt(100);
-        if (r < 10) return StatutService.ACE;
-        if (r < 35) return StatutService.FAUTE;
-        if (r < 40) return StatutService.LET;
+        if (r < 20) return StatutService.ACE;
+        if (r < 50) return StatutService.FAUTE;
+        if (r < 60) return StatutService.LET;
         return StatutService.CORRECT;
     }
-    //</editor-fold>
     
-    // -----------------------------------------------------------------
-    // --- 2. MODE MANUEL (Corrigé avec Stats) ---
-    // -----------------------------------------------------------------
-
+    // Mode MANUEL
+    
     public void jouer(Scanner scanner) {
         System.out.println("\n--- Nouvel échange (Mode Manuel) ---");
         joueurAuService.servir();
@@ -128,7 +112,7 @@ public class Echange {
         switch (this.statutService) {
             case ACE: 
                 System.out.println("ACE! Point pour " + joueurAuService.getPrenom());
-                this.statsServeur.incrementerAces(); // <-- MISE À JOUR STATS
+                this.statsServeur.incrementerAces(); 
                 this.vainqueur = this.joueurAuService; 
                 break;
             case LET: 
@@ -153,7 +137,7 @@ public class Echange {
         switch (this.statutService) {
             case ACE:
                 System.out.println("ACE! Point pour " + joueurAuService.getPrenom());
-                this.statsServeur.incrementerAces(); // <-- MISE À JOUR STATS
+                this.statsServeur.incrementerAces(); 
                 this.vainqueur = this.joueurAuService;
                 break;
             case LET:
@@ -162,7 +146,7 @@ public class Echange {
                 break;
             case FAUTE:
                 System.out.println("DOUBLE FAUTE! Point pour " + receveur.getPrenom());
-                this.statsServeur.incrementerDoublesFautes(); // <-- MISE À JOUR STATS
+                this.statsServeur.incrementerDoublesFautes(); 
                 this.statutService = StatutService.DOUBLE_FAUTE;
                 this.vainqueur = this.receveur;
                 break;
@@ -173,8 +157,7 @@ public class Echange {
         }
     }
 
-    // ... (demanderResultatService, demanderVainqueurRally, demanderLitige sont inchangés)
-    //<editor-fold desc="Méthodes de saisie manuelle (inchangées)">
+    
     private StatutService demanderResultatService(Scanner scanner) {
         while (true) {
             System.out.println("  Résultat ? (1: Faute, 2: Let, 3: Correct, 4: Ace)");
@@ -199,18 +182,24 @@ public class Echange {
             System.out.println("  Qui gagne l'échange ? (1: " + joueurAuService.getPrenom() + ", 2: " + receveur.getPrenom() + ", 3: LITIGE)");
             try {
                 int choix = scanner.nextInt();
-                if (choix == 1) {
-                    this.vainqueur = this.joueurAuService; 
-                    System.out.println("Point remporté par " + this.vainqueur.getPrenom() + " !");
-                    return;
-                } else if (choix == 2) {
-                    this.vainqueur = this.receveur; 
-                    System.out.println("Point remporté par " + this.vainqueur.getPrenom() + " !");
-                    return;
-                } else if (choix == 3) {
-                    demanderLitige(scanner);
-                } else {
-                    System.out.println("Erreur : choix invalide.");
+                switch (choix) {
+                    case 1:
+                        this.vainqueur = this.joueurAuService;
+                        System.out.println("Point remporté par " + this.vainqueur.getPrenom() + " !");
+                        return;
+
+                    case 2:
+                        this.vainqueur = this.receveur;
+                        System.out.println("Point remporté par " + this.vainqueur.getPrenom() + " !");
+                        return;
+
+                    case 3:
+                        demanderLitige(scanner);
+                        break;
+
+                    default:
+                        System.out.println("Erreur : choix invalide.");
+                        break;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Erreur : Veuillez entrer un nombre.");
@@ -224,24 +213,25 @@ public class Echange {
             System.out.println("    Quel joueur appelle l'arbitre ? (1: " + joueurAuService.getPrenom() + ", 2: " + receveur.getPrenom() + ")");
             try {
                 int choix = scanner.nextInt();
-                if (choix == 1) {
-                    joueurAuService.appelerArbitre(this.arbitre);
-                    return;
-                } else if (choix == 2) {
-                    receveur.appelerArbitre(this.arbitre);
-                    return;
-                } else {
-                    System.out.println("Choix invalide.");
-                }
+                switch (choix) {
+                    case 1 -> {
+                        joueurAuService.appelerArbitre(this.arbitre);
+                        return;
+                    }
+                    case 2 -> {
+                        receveur.appelerArbitre(this.arbitre);
+                        return;
+                    }
+                    default -> System.out.println("Choix invalide.");
+            }
             } catch (InputMismatchException e) {
                 System.out.println("Erreur : Veuillez entrer un nombre.");
                 scanner.next(); 
             }
         }
     }
-    //</editor-fold>
     
-    // --- GETTERS ---
     public Joueur getVainqueur() { return vainqueur; }
     public StatutService getStatutService() { return statutService; }
+    public int getNombreDeServices() { return nombreDeServices; }
 }

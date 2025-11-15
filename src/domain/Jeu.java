@@ -2,12 +2,6 @@ package domain;
 
 import java.util.Scanner;
 
-/**
- * Représente un jeu dans un set de tennis.
- * Gère le mode automatique/manuel et passe les stats à l'Echange.
- * @author VotreNom
- * @version 1.7 (Final - Ajout Stats)
- */
 public class Jeu {
 
     private Joueur serveur;
@@ -27,17 +21,12 @@ public class Jeu {
     }
 
 
-    // --- 1. MODE AUTOMATIQUE (Corrigé) ---
-    /**
-     * CORRIGÉ : Accepte les stats du match pour les passer à l'Echange.
-     */
     public void jouerJeu(SetTennis set, boolean showDetails, Statistiques statsServeur, Statistiques statsReceveur) {
         if(showDetails) System.out.println("\n\n=== NOUVEAU JEU (Serveur: " + serveur.getPrenom() + ") ===");
         
         while (this.vainqueur == null) {
-            // CORRECTION : On passe les stats au constructeur de l'Echange
             Echange echange = new Echange(serveur, receveur, this.arbitre, statsServeur, statsReceveur);
-            echange.jouer(showDetails); // Appel auto
+            echange.jouer(showDetails);
             
             mettreAJourScore(echange.getVainqueur());
         }
@@ -47,16 +36,11 @@ public class Jeu {
         }
     }
 
-    // --- 2. MODE MANUEL (Corrigé) ---
-    /**
-     * CORRIGÉ : Accepte les stats du match pour les passer à l'Echange.
-     */
     public void jouerJeu(SetTennis set, Scanner scanner, Statistiques statsServeur, Statistiques statsReceveur) {
         System.out.println("\n\n=== NOUVEAU JEU (Serveur: " + serveur.getPrenom() + ") ===");
         while (this.vainqueur == null) {
-            // CORRECTION : On passe les stats au constructeur de l'Echange
             Echange echange = new Echange(serveur, receveur, this.arbitre, statsServeur, statsReceveur);
-            echange.jouer(scanner); // Appel manuel
+            echange.jouer(scanner); 
             
             mettreAJourScore(echange.getVainqueur());
 
@@ -67,7 +51,7 @@ public class Jeu {
         System.out.println("=== JEU TERMINÉ ===");
     }
 
-    // --- LOGIQUE DE SCORE (Inchangée) ---
+   
     private void mettreAJourScore(Joueur vainqueurPoint) {
         if (vainqueurPoint == serveur) {
             if ("AV".equals(scoreReceveur)) { scoreReceveur = "40"; } 
@@ -91,7 +75,7 @@ public class Jeu {
         }
     }
 
-    // --- GETTERS (Inchangés) ---
+    // Getters
     public Joueur getVainqueur() { return vainqueur; }
     public Joueur getServeur() { return serveur; }
     public String getScoreServeur() { return scoreServeur; }
