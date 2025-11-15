@@ -60,7 +60,9 @@ public class Statistiques {
     public void incrementerSecondServices() {
         this.nbSecondServices++;
     }
-
+    public void incrementerPointRemportes() {
+        this.nbPointsRemportes++;
+    }
     public void incrementerDoublesFautes() {
         this.nbDoublesFautes++;
     }

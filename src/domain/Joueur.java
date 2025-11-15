@@ -46,11 +46,11 @@ public class Joueur extends Personne implements ComportementSpectateur {
         System.out.println(getPrenom() + " lève la main et appelle l'arbitre !");
         arbitre.deciderLitige(this); 
     }
-
+    
     public void boire() {
         System.out.println(getPrenom() + " " + getNomCourant() + " boit une gorgée d'eau.");
     }
-    
+  
     public void sEncourager() {
         System.out.println(getPrenom() + " " + getNomCourant() + " crie 'Come on!'");
     }
@@ -70,7 +70,6 @@ public class Joueur extends Personne implements ComportementSpectateur {
     public void applaudir() {
         System.out.println(getPrenom() + " " + getNomCourant() + " applaudit son adversaire depuis les gradins.");
     }
-
     @Override
     public void crier() {
         System.out.println(getPrenom() + " " + getNomCourant() + " crie pour encourager un collègue.");

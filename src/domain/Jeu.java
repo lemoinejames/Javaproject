@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 public class Jeu {
 
-    private Joueur serveur;
-    private Joueur receveur;
+    private final Joueur serveur;
+    private final Joueur receveur;
     private String scoreServeur;
     private String scoreReceveur;
     private Joueur vainqueur;
-    private Arbitre arbitre;
+    private final Arbitre arbitre;
 
     public Jeu(Joueur serveur, Joueur receveur, Arbitre arbitre) {
         this.serveur = serveur;
@@ -65,14 +65,14 @@ public class Jeu {
     }
     
     private String calculerProchainScore(String scoreActuel, String scoreAdversaire) {
-        switch (scoreActuel) {
-            case "0":  return "15";
-            case "15": return "30";
-            case "30": return "40";
-            case "40": return "40".equals(scoreAdversaire) ? "AV" : "GAGNÉ";
-            case "AV": return "GAGNÉ";
-            default: return "0";
-        }
+        return switch (scoreActuel) {
+            case "0" -> "15";
+            case "15" -> "30";
+            case "30" -> "40";
+            case "40" -> "40".equals(scoreAdversaire) ? "AV" : "GAGNÉ";
+            case "AV" -> "GAGNÉ";
+            default -> "0";
+        };
     }
 
     // Getters

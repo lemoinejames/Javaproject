@@ -30,10 +30,7 @@ public class SetTennis {
         this.vainqueur = null;
     }
 
-    // --- 1. MODE AUTOMATIQUE (Corrigé) ---
-    /**
-     * CORRIGÉ : Accepte les stats du match pour les passer au Jeu.
-     */
+    // Mode AUTO
     public void jouerSet(boolean showDetails, Statistiques statsJ1, Statistiques statsJ2) {
         if (showDetails) System.out.println("\n\n#################### DÉBUT DU SET ####################");
         Joueur serveurActuel = this.premierServeurDuSet; 
@@ -42,11 +39,10 @@ public class SetTennis {
             Jeu jeuActuel; 
             
             if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && !this.estSetDecisif) {
-                // --- TIE-BREAK ---
+               
                 if (showDetails) System.out.println("\n--- JEU DÉCISIF (TIE-BREAK) ---");
                 jeuActuel = new Jeu(serveurActuel, (serveurActuel == joueur1) ? joueur2 : joueur1, arbitre);
                 
-                // CORRECTION : Passer les stats (dans le bon ordre)
                 if (serveurActuel == joueur1) {
                     jeuActuel.jouerJeu(this, showDetails, statsJ1, statsJ2);
                 } else {
@@ -57,14 +53,12 @@ public class SetTennis {
                 else jeuxGagnesJoueur2++;
                 
             } else {
-                // --- JEU NORMAL ---
                 if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && this.estSetDecisif) {
                     if (showDetails) System.out.println("\n--- PAS DE TIE-BREAK (Set Décisif) ---");
                 }
                 Joueur receveurActuel = (serveurActuel == joueur1) ? joueur2 : joueur1;
                 jeuActuel = new Jeu(serveurActuel, receveurActuel, arbitre);
 
-                // CORRECTION : Passer les stats (dans le bon ordre)
                 if (serveurActuel == joueur1) {
                     jeuActuel.jouerJeu(this, showDetails, statsJ1, statsJ2);
                 } else {
@@ -86,10 +80,8 @@ public class SetTennis {
         if (showDetails) System.out.println("#################### FIN DU SET ####################");
     }
 
-    // --- 2. MODE MANUEL (Corrigé) ---
-    /**
-     * CORRIGÉ : Accepte les stats du match pour les passer au Jeu.
-     */
+    // Mode MANUEL
+   
     public void jouerSet(Scanner scanner, Statistiques statsJ1, Statistiques statsJ2) {
         System.out.println("\n\n#################### DÉBUT DU SET ####################");
         Joueur serveurActuel = this.premierServeurDuSet; 
@@ -99,11 +91,10 @@ public class SetTennis {
             Jeu jeuActuel; 
 
             if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && !this.estSetDecisif) {
-                // --- TIE-BREAK ---
+               
                 System.out.println("\n--- JEU DÉCISIF (TIE-BREAK) ---");
                 jeuActuel = new Jeu(serveurActuel, (serveurActuel == joueur1) ? joueur2 : joueur1, arbitre);
 
-                // CORRECTION : Passer les stats (dans le bon ordre)
                 if (serveurActuel == joueur1) {
                     jeuActuel.jouerJeu(this, scanner, statsJ1, statsJ2);
                 } else {
@@ -114,14 +105,13 @@ public class SetTennis {
                 else jeuxGagnesJoueur2++;
                 
             } else {
-                // --- JEU NORMAL ---
+               
                 if (jeuxGagnesJoueur1 == 6 && jeuxGagnesJoueur2 == 6 && this.estSetDecisif) {
                     System.out.println("\n--- PAS DE TIE-BREAK (Set Décisif) ---");
                 }
                 Joueur receveurActuel = (serveurActuel == joueur1) ? joueur2 : joueur1;
                 jeuActuel = new Jeu(serveurActuel, receveurActuel, arbitre);
 
-                // CORRECTION : Passer les stats (dans le bon ordre)
                 if (serveurActuel == joueur1) {
                     jeuActuel.jouerJeu(this, scanner, statsJ1, statsJ2);
                 } else {
@@ -141,7 +131,7 @@ public class SetTennis {
         System.out.println("#################### FIN DU SET ####################");
     }
 
-    // --- LOGIQUE COMMUNE (Inchangée) ---
+    
     private void verifierVainqueurSet() {
         if (this.estSetDecisif) {
             if ((jeuxGagnesJoueur1 >= 6 && jeuxGagnesJoueur1 >= jeuxGagnesJoueur2 + 2)) {
@@ -162,7 +152,7 @@ public class SetTennis {
         }
     }
 
-    // --- GETTERS (Inchangés) ---
+    // Getters
     public Joueur getVainqueur() { return vainqueur; }
     public int getJeuxGagnesJoueur1() { return jeuxGagnesJoueur1; }
     public int getJeuxGagnesJoueur2() { return jeuxGagnesJoueur2; }

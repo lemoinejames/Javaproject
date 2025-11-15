@@ -15,8 +15,8 @@ public class Echange {
     private int nombreDeServices;
     private Joueur vainqueur;
     private final Random rand = new Random();
-    private Statistiques statsServeur;
-    private Statistiques statsReceveur;
+    private final Statistiques statsServeur;
+    private final Statistiques statsReceveur;
 
     
     public Echange(Joueur joueurAuService, Joueur receveur, Arbitre arbitre, Statistiques statsServeur, Statistiques statsReceveur) {
@@ -38,23 +38,27 @@ public class Echange {
         this.statsServeur.incrementerPremierServices();
 
         switch (this.statutService) {
-            case ACE: 
+            case ACE -> { 
                 if(showDetails) System.out.println("ACE!");
-                this.statsServeur.incrementerAces(); 
-                this.vainqueur = this.joueurAuService; 
-                break;
-            case LET: 
+                this.statsServeur.incrementerAces();
+                this.vainqueur = this.joueurAuService;
+            }
+            case LET -> { 
                 if(showDetails) System.out.println("LET!");
-                jouer(showDetails); 
-                break;
-            case FAUTE: 
+                jouer(showDetails);
+            }
+            case FAUTE -> { 
                 if(showDetails) System.out.println("FAUTE!");
-                jouerDeuxiemeBalle(showDetails); 
-                break;
-            case CORRECT: 
+                jouerDeuxiemeBalle(showDetails);
+            }
+            case CORRECT -> { 
                 if(showDetails) System.out.println("Service correct...");
-                simulerVainqueurEchange(showDetails); 
+                simulerVainqueurEchange(showDetails);
+            }
+            case DOUBLE_FAUTE -> {
                 break;
+            }
+            
         }
     }
 
@@ -63,25 +67,30 @@ public class Echange {
         this.statutService = simulerService(); 
         this.statsServeur.incrementerSecondServices();
         switch (this.statutService) {
-            case ACE: 
+            case ACE -> { 
                 if(showDetails) System.out.println("ACE (2e balle)!");
-                this.statsServeur.incrementerAces(); 
-                this.vainqueur = this.joueurAuService; 
-                break;
-            case LET: 
+                this.statsServeur.incrementerAces();
+                this.vainqueur = this.joueurAuService;
+            }
+            case LET -> { 
                 if(showDetails) System.out.println("LET (2e balle)!");
-                jouerDeuxiemeBalle(showDetails); 
-                break;
-            case FAUTE:
+                jouerDeuxiemeBalle(showDetails);
+            }
+            case FAUTE -> {
                 if(showDetails) System.out.println("DOUBLE FAUTE!");
                 this.statsServeur.incrementerDoublesFautes(); 
                 this.statutService= StatutService.DOUBLE_FAUTE;
                 this.vainqueur = this.receveur;
-                break;
-            case CORRECT: 
+                this.statsReceveur.incrementerPointRemportes();
+            }
+            case CORRECT -> { 
                 if(showDetails) System.out.println("Service correct (2e balle)");
-                simulerVainqueurEchange(showDetails); 
+                simulerVainqueurEchange(showDetails);
+            }
+            case DOUBLE_FAUTE -> {
                 break;
+            }
+
         }
     }
 
@@ -110,23 +119,25 @@ public class Echange {
         this.statutService = demanderResultatService(scanner);
 
         switch (this.statutService) {
-            case ACE: 
+            case ACE -> { 
                 System.out.println("ACE! Point pour " + joueurAuService.getPrenom());
-                this.statsServeur.incrementerAces(); 
-                this.vainqueur = this.joueurAuService; 
-                break;
-            case LET: 
+                this.statsServeur.incrementerAces();
+                this.vainqueur = this.joueurAuService;
+            }
+            case LET -> { 
                 System.out.println("LET! Le service est à rejouer.");
-                jouer(scanner); 
-                break;
-            case FAUTE: 
+                jouer(scanner);
+            }
+            case FAUTE -> { 
                 System.out.println("FAUTE!");
-                jouerDeuxiemeBalle(scanner); 
-                break;
-            case CORRECT: 
+                jouerDeuxiemeBalle(scanner);
+            }
+            case CORRECT -> { 
                 System.out.println("Service correct, l'échange est engagé...");
-                demanderVainqueurRally(scanner); 
-                break;
+                demanderVainqueurRally(scanner);
+            }
+            case DOUBLE_FAUTE -> {
+            }
         }
     }
 
@@ -135,25 +146,29 @@ public class Echange {
         System.out.println("Deuxième balle... ");
         this.statutService = demanderResultatService(scanner);
         switch (this.statutService) {
-            case ACE:
+            case ACE -> {
                 System.out.println("ACE! Point pour " + joueurAuService.getPrenom());
                 this.statsServeur.incrementerAces(); 
                 this.vainqueur = this.joueurAuService;
-                break;
-            case LET:
+            }
+            case LET -> {
                 System.out.println("LET! La deuxième balle est à rejouer.");
                 jouerDeuxiemeBalle(scanner);
-                break;
-            case FAUTE:
+            }
+            case FAUTE -> {
                 System.out.println("DOUBLE FAUTE! Point pour " + receveur.getPrenom());
                 this.statsServeur.incrementerDoublesFautes(); 
                 this.statutService = StatutService.DOUBLE_FAUTE;
                 this.vainqueur = this.receveur;
-                break;
-            case CORRECT:
+                this.statsReceveur.incrementerPointRemportes();
+            }
+            case CORRECT -> {
                 System.out.println("Service correct, l'échange est engagé...");
                 demanderVainqueurRally(scanner);
-                break;
+            }
+            case DOUBLE_FAUTE -> {
+            }
+
         }
     }
 
@@ -164,11 +179,19 @@ public class Echange {
             try {
                 int choix = scanner.nextInt();
                 switch (choix) {
-                    case 1: return StatutService.FAUTE;
-                    case 2: return StatutService.LET;
-                    case 3: return StatutService.CORRECT;
-                    case 4: return StatutService.ACE;
-                    default: System.out.println("Erreur : choix invalide.");
+                    case 1 -> {
+                        return StatutService.FAUTE;
+                    }
+                    case 2 -> {
+                        return StatutService.LET;
+                    }
+                    case 3 -> {
+                        return StatutService.CORRECT;
+                    }
+                    case 4 -> {
+                        return StatutService.ACE;
+                    }
+                    default -> System.out.println("Erreur : choix invalide.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Erreur : Veuillez entrer un nombre.");
@@ -183,23 +206,21 @@ public class Echange {
             try {
                 int choix = scanner.nextInt();
                 switch (choix) {
-                    case 1:
+                    case 1 -> {
                         this.vainqueur = this.joueurAuService;
                         System.out.println("Point remporté par " + this.vainqueur.getPrenom() + " !");
                         return;
+                    }
 
-                    case 2:
+                    case 2 -> {
                         this.vainqueur = this.receveur;
                         System.out.println("Point remporté par " + this.vainqueur.getPrenom() + " !");
                         return;
+                    }
 
-                    case 3:
-                        demanderLitige(scanner);
-                        break;
+                    case 3 -> demanderLitige(scanner);
 
-                    default:
-                        System.out.println("Erreur : choix invalide.");
-                        break;
+                    default -> System.out.println("Erreur : choix invalide.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Erreur : Veuillez entrer un nombre.");

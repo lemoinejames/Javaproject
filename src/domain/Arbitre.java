@@ -15,6 +15,7 @@ public class Arbitre extends Personne {
         this.humeur = "Calme";
     }
     
+
     public void deciderLitige(Joueur joueur) {
         System.out.println(joueur.getPrenom() + " conteste une décision. L'arbitre " + getPrenom() + " " + getNomCourant() + " réfléchit...");
         Random rand = new Random();
