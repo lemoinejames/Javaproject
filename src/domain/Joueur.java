@@ -58,13 +58,25 @@ public class Joueur extends Personne implements ComportementSpectateur {
     public void crierVictoire() {
         System.out.println(getPrenom() + " " + getNomCourant() + " lève les bras et crie sa victoire !");
     }
-
-    // --- GETTERS ET SETTERS ---
+   
     @Override
     public String toString() {
-        return super.toString() + " | Classement: " + this.classement;
+        //return super.toString() + " | Classement: " + this.classement;
+         return "Joueur : " + getPrenom() + " " + getNomCourant() +
+           "\n  Date de naissance : " + getDateNaissance() +
+           "\n  Lieu de naissance : " + getLieuNaissance() +
+           "\n  Nationalité : " + getNationalite() +
+           "\n  Taille / Poids : " + getTaille() + "cm / " + getPoids() + "kg" +
+           "\n  Genre : " + getGenre() +
+           "\n  Main de jeu : " + main +
+           "\n  Sponsor : " + sponsor +
+           "\n  Entraîneur : " + entraineur +
+           "\n  Tenue : " + tenue +
+           "\n  Classement : " + classement +
+           "\n  Réputation : " + reputation +
+           "\n  Statistiques : " + (statsCarriere != null ? statsCarriere.toString() : "Aucune") +
+           "\n";
     }
-    
     
     @Override
     public void applaudir() {
@@ -85,7 +97,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
         System.out.println(getPrenom() + " " + getNomCourant() + " se repose les yeux dans les tribunes.");
     }
     
-  
+    // --- Getters Setters ---
     public MainDeJeu getMain() { return main; }
     public void setMain(MainDeJeu main) { this.main = main; }
     public String getSponsor() { return sponsor; }

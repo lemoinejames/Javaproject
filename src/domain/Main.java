@@ -5,28 +5,21 @@ import domain.enums.MainDeJeu;
 import domain.enums.Surface;
 import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
-import java.util.ArrayList; // Importer l'exception
+import java.util.ArrayList; 
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Classe principale de l'application (Partie 4).
- * Gère l'interface utilisateur en mode console, les menus
- * et la boucle de vie du programme.
- *
- * @author VotreNom
- * @version 1.1 (Ajout validation des Strings)
- */
+
 public class Main {
 
     // --- Attributs de l'application ---
-    private Scanner scanner;
+    private final Scanner scanner;
     private Tournoi tournoiActuel;
     
-    private List<Joueur> tousLesJoueurs;
-    private List<Arbitre> tousLesArbitres;
-    private List<Spectateur> tousLesSpectateurs;
+    private final List<Joueur> tousLesJoueurs;
+    private final List<Arbitre> tousLesArbitres;
+    private final List<Spectateur> tousLesSpectateurs;
 
     /**
      * Constructeur de l'application.
@@ -201,15 +194,21 @@ public class Main {
     }
 
 
-    // --- MÉTHODES UTILITAIRES ---
+    // --- Méthodes Création joueur  ---
     
     /**
-     * (Req 2.a) Crée des participants auto et les ajoute aux listes globales.
-     */
+     *  Crée des participants auto et les ajoute aux listes globales.
+     **/
     private void creerParticipantsAutomatiquement(int nbHommes, int nbFemmes, int nbArbitres, int nbSpecs) {
-        for (int i = 0; i < nbHommes; i++) {
+       
+        String chemin = "src/data/JoueurHomme.json"; // relatif au dossier racine du projet
+        List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin);
+        tousLesJoueurs.addAll(joueursH);
+
+        /*for (int i = 0; i < nbHommes; i++) {
+
             tousLesJoueurs.add(new Joueur("Joueur_H", "AutoH" + (i+1), LocalDate.of(1990, 1, 1), "AutoVille", "AutoPays", 180, 80, Genre.HOMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
-        }
+        }*/
         for (int i = 0; i < nbFemmes; i++) {
             tousLesJoueurs.add(new Joueur("Joueuse_F", "AutoF" + (i+1), LocalDate.of(1992, 1, 1), "AutoVille", "AutoPays", 170, 60, Genre.FEMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
         }

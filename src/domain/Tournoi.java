@@ -155,13 +155,12 @@ public class Tournoi {
         int index = lireEntier(scanner, "Choisir un match : ", 1, tousLesMatchs.size());
         Match match = tousLesMatchs.get(index - 1);
         
-        // --- CORRECTION DE LA LOGIQUE ---
         
         // Récupère les joueurs et leurs stats respectives
-        Joueur j1 = match.getJoueur1(); // <-- CORRIGÉ
+        Joueur j1 = match.getJoueur1(); 
         Statistiques statsJ1 = match.getStatsJoueur1();
         
-        Joueur j2 = match.getJoueur2(); // <-- CORRIGÉ
+        Joueur j2 = match.getJoueur2(); 
         Statistiques statsJ2 = match.getStatsJoueur2();
 
         System.out.println("Stats pour " + j1.getPrenom() + ":");
@@ -192,7 +191,7 @@ public class Tournoi {
         System.out.println("Nombre total d'Aces servis (tous tableaux) : " + totalAces);
     }
 
-    // --- LOGIQUE INTERNE DU TOURNOI ---
+    // --- Logique interne tournoi ---
 
     private void jouerTableau(Categorie categorie, Scanner scanner) {
         List<Joueur> participants;
