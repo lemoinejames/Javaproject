@@ -1,5 +1,8 @@
 package domain;
 
+import domain.participants.Arbitre;
+import domain.participants.Joueur;
+import domain.participants.Statistiques;
 import java.util.Scanner;
 
 public class Jeu {

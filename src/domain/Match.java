@@ -2,6 +2,9 @@ package domain;
 
 import domain.enums.Categorie;
 import domain.enums.Niveau;
+import domain.participants.Arbitre;
+import domain.participants.Joueur;
+import domain.participants.Statistiques;
 import java.util.Random;
 import java.util.Scanner;
 

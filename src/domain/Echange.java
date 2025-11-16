@@ -1,6 +1,9 @@
 package domain;
 
 import domain.enums.StatutService;
+import domain.participants.Arbitre;
+import domain.participants.Joueur;
+import domain.participants.Statistiques;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;

@@ -2,6 +2,7 @@ package domain;
 
 import domain.enums.Genre;
 import domain.enums.MainDeJeu;
+import domain.participants.Joueur;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
