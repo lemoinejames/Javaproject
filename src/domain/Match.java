@@ -9,9 +9,6 @@ import java.util.Scanner;
  * Représente un match de tennis complet.
  * Gère le mode automatique/manuel, la règle du set décisif
  * et la collecte des statistiques de match.
- *
- * @author VotreNom
- * @version 1.5 (Final - Ajout de tous les Getters et Stats)
  */
 public class Match {
 
@@ -39,8 +36,6 @@ public class Match {
         this.setsGagnesJoueur1 = 0;
         this.setsGagnesJoueur2 = 0;
         this.setsJoues = 0;
-        
-        // CORRECTION (pour le NullPointerException)
         this.statsJoueur1 = new Statistiques(); 
         this.statsJoueur2 = new Statistiques();
     }
@@ -136,31 +131,16 @@ public class Match {
         this.perdant.getStatsCarriere().incrementerMatchsJoues();
     }
 
-    // --- GETTERS (Corrigés et Complets) ---
+    // --- Getters ---
     
     public Joueur getVainqueur() { return vainqueur; }
     public Joueur getPerdant() { return perdant; }
     public int getSetsGagnesJoueur1() { return setsGagnesJoueur1; }
     public int getSetsGagnesJoueur2() { return setsGagnesJoueur2; }
-    
-    // Getters pour les stats
     public Statistiques getStatsJoueur1() { return statsJoueur1; }
     public Statistiques getStatsJoueur2() { return statsJoueur2; }
-    
-    // Getters pour corriger les erreurs 'cannot find symbol'
-    public Joueur getJoueur1() { 
-        return joueur1; 
-    }
-    
-    public Joueur getJoueur2() { 
-        return joueur2; 
-    }
-    
-    public Niveau getNiveau() { 
-        return niveau; 
-    }
-    
-    public Categorie getCategorie() { 
-        return categorie; 
-    }
+    public Joueur getJoueur1() { return joueur1; }
+    public Joueur getJoueur2() { return joueur2; }
+    public Niveau getNiveau() { return niveau; }
+    public Categorie getCategorie() { return categorie; }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package domain;
 
 import domain.enums.Genre;
@@ -11,9 +7,6 @@ import java.time.LocalDate;
  * Représente un spectateur assistant à un match de tennis.
  * Cette classe hérite de Personne et ajoute des attributs liés à sa place
  * dans les gradins et des actions spécifiques.
- *
- * @author VotreNom
- * @version 1.0
  */
 public class Spectateur extends Personne implements ComportementSpectateur {
 
