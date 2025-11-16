@@ -173,6 +173,5 @@ public class Statistiques {
     public void setTotalGains(double totalGains) {
         this.totalGains = totalGains;
     }
-    
-    //</editor-fold>
+
 }

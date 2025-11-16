@@ -9,6 +9,7 @@ import java.time.Period;
  * Cette classe sert de classe mère pour les Joueurs, Arbitres et Spectateurs.
  * Les informations de naissance, de genre et de décès sont immuables après création.
  */
+
 public abstract class Personne {
 
     // --- ATTRIBUTS ---

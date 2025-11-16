@@ -204,14 +204,13 @@ public class Main {
      **/
     private void creerParticipantsAutomatiquement(int nbHommes, int nbFemmes, int nbArbitres, int nbSpecs) {
        
-        String chemin = "src/data/JoueurHomme.json"; // relatif au dossier racine du projet
+        String chemin = "src/domain/data/JoueurHomme.json"; 
         List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin);
         tousLesJoueurs.addAll(joueursH);
 
-        /*for (int i = 0; i < nbHommes; i++) {
-
+        for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
             tousLesJoueurs.add(new Joueur("Joueur_H", "AutoH" + (i+1), LocalDate.of(1990, 1, 1), "AutoVille", "AutoPays", 180, 80, Genre.HOMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
-        }*/
+        }
         for (int i = 0; i < nbFemmes; i++) {
             tousLesJoueurs.add(new Joueur("Joueuse_F", "AutoF" + (i+1), LocalDate.of(1992, 1, 1), "AutoVille", "AutoPays", 170, 60, Genre.FEMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
         }
