@@ -65,21 +65,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
    
     @Override
     public String toString() {
-        //return super.toString() + " | Classement: " + this.classement;
-         return "Joueur : " + getPrenom() + " " + getNomCourant() +
-           "\n  Date de naissance : " + getDateNaissance() +
-           "\n  Lieu de naissance : " + getLieuNaissance() +
-           "\n  Nationalité : " + getNationalite() +
-           "\n  Taille / Poids : " + getTaille() + "cm / " + getPoids() + "kg" +
-           "\n  Genre : " + getGenre() +
-           "\n  Main de jeu : " + main +
-           "\n  Sponsor : " + sponsor +
-           "\n  Entraîneur : " + entraineur +
-           "\n  Tenue : " + tenue +
-           "\n  Classement : " + classement +
-           "\n  Réputation : " + reputation +
-           "\n  Statistiques : " + (statsCarriere != null ? statsCarriere.toString() : "Aucune") +
-           "\n";
+        return super.toString() + " | Classement: " + this.classement;
     }
     
     @Override

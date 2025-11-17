@@ -1,9 +1,9 @@
 package domain.participants;
 
-import domain.Jeu;
-import domain.Match;
-import domain.SetTennis;
 import domain.enums.Genre;
+import domain.tournoi.Jeu;
+import domain.tournoi.Match;
+import domain.tournoi.SetTennis;
 import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
 import java.util.Random;

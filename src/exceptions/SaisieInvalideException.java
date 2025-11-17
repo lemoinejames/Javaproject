@@ -12,7 +12,6 @@ public class SaisieInvalideException extends Exception {
 
     /**
      * Construit une SaisieInvalideException avec un message d'erreur.
-     * @param message Le message expliquant l'erreur.
      */
     public SaisieInvalideException(String message) {
         super(message);

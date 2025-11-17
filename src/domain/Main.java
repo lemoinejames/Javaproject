@@ -6,6 +6,8 @@ import domain.enums.Surface;
 import domain.participants.Arbitre;
 import domain.participants.Joueur;
 import domain.participants.Spectateur;
+import domain.tournoi.Tournoi;
+import domain.utils.LectureJSON;
 import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
 import java.util.ArrayList; 
@@ -298,7 +300,7 @@ public class Main {
     }
     
     /**
-     * AJOUT (Req 1.b) : Teste l'exception personnalisée au démarrage.
+     *  Teste l'exception personnalisée au démarrage.
      */
     private void testerExceptionMetier() {
         System.out.println("--- Test de l'exception personnalisée ---");

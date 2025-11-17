@@ -1,4 +1,4 @@
-package domain;
+package domain.utils;
 
 import domain.enums.Genre;
 import domain.enums.MainDeJeu;
@@ -39,11 +39,8 @@ public class LectureJSON {
         List<Joueur> joueurs = new ArrayList<>();
         try {
             String contenu = new String(Files.readAllBytes(Paths.get(chemin)));
-
-           
             contenu = contenu.substring(1, contenu.length() - 1); // enlève [ et ] du JSON
             String[] objets = contenu.split("\\},\\{");
-            System.err.println("Objets JSON trouvés : " + objets.length);
 
             for (int i = 0; i < objets.length; i++) {
                 String jsonObjet = objets[i];
