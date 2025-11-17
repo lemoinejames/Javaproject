@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe utilitaire pour la lecture de données JSON.
+ * 
+ */
 public class LectureJSON {
 
     public static Joueur lectureJSON(String json) {

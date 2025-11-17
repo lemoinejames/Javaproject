@@ -4,7 +4,9 @@ import domain.participants.Arbitre;
 import domain.participants.Joueur;
 import domain.participants.Statistiques;
 import java.util.Scanner;
-
+/**
+ * Représente un jeu dans un match de tennis.
+ */
 public class Jeu {
 
     private final Joueur serveur;

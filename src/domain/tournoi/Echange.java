@@ -8,7 +8,9 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-
+/**
+ * Classe représentant un échange dans un jeu de tennis.
+ */
 public class Echange {
 
     private final Joueur joueurAuService;

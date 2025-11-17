@@ -8,6 +8,9 @@ import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
 import java.util.Random;
 
+/**
+ * Classe représentant un arbitre de tennis.
+ */
 public class Arbitre extends Personne {
     
     private String humeur;

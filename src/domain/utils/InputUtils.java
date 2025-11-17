@@ -4,6 +4,10 @@ import exceptions.SaisieInvalideException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Classe utilitaire pour la gestion de l'affichage des entrées.
+ * Nous permet d'alléger le code dans Main.java.
+ */
 public class InputUtils {
 
     public static int lireEntier(Scanner scanner, String message, int min, int max) {

@@ -4,11 +4,14 @@ import domain.participants.Joueur;
 import domain.tournoi.Tournoi;
 import java.util.List;
 
+/**
+ * Classe utilitaire pour la gestion de l'affichage des sorties.
+ * Nous permet d'alléger le code dans Main.java.
+ */
+
 public class OutputUtils {
 
-    // ============================
-    //        MENUS PRINCIPAUX
-    // ============================
+    //   Menus Principaux
     public static void afficherMenuPrincipal(Tournoi tournoi) {
         System.out.println("\n--- MENU PRINCIPAL ---");
         if (tournoi != null) {
@@ -42,9 +45,9 @@ public class OutputUtils {
     }
 
 
-    // ============================
-    //       MESSAGES GENERAUX
-    // ============================
+    
+    //       Messages Généraux
+   
     public static void afficherMessageAccueil() {
         System.out.println("Bienvenue dans le Gestionnaire de Tournoi de Tennis !");
     }
@@ -65,9 +68,9 @@ public class OutputUtils {
         System.out.print("Ville (1: Paris, 2: Melbourne, 3: Londres, 4: New York) : ");
     }
 
-    // ============================
-    //        JOUEURS
-    // ============================
+ 
+    //        Joueurs
+   
     public static void afficherListeJoueurs(List<Joueur> joueurs) {
         System.out.println("\n--- LISTE DES JOUEURS ---");
         for (int i = 0; i < joueurs.size(); i++) {
