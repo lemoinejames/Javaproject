@@ -7,11 +7,12 @@ import domain.participants.Arbitre;
 import domain.participants.Joueur;
 import domain.participants.Spectateur;
 import domain.tournoi.Tournoi;
+import domain.utils.InputUtils;
 import domain.utils.LectureJSON;
+import domain.utils.OutputUtils;
 import exceptions.SaisieInvalideException;
 import java.time.LocalDate;
 import java.util.ArrayList; 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,51 +53,35 @@ public class Main {
      * Lance l'application et affiche le menu principal en boucle.
      */
     public void demarrer() {
-        System.out.println("Bienvenue dans le Gestionnaire de Tournoi de Tennis !");
-        
-        // --- Test de l'exception (Req 1.b) ---
-        // On le fait une fois au démarrage pour prouver que ça marche
-        testerExceptionMetier();
-        
-        boolean enCours = true;
-        while (enCours) {
-            afficherMenuPrincipal();
-            int choix = lireEntier("Votre choix : ", 0, 4);
-
-            switch (choix) {
-                case 1: creerTournoi(); break;
-                case 2:
-                    if (tournoiActuel != null) {
-                        gererTournoi(); 
-                    } else {
-                        System.out.println("Erreur : Vous devez d'abord créer un tournoi (Option 1).");
+        try (scanner) {
+            OutputUtils.afficherMessageAccueil();
+            
+            // --- Test de l'exception ---
+            // On le fait une fois au démarrage pour prouver que ça marche
+            testerExceptionMetier();
+            
+            boolean enCours = true;
+            while (enCours) {
+                OutputUtils.afficherMenuPrincipal(tournoiActuel);
+                int choix = InputUtils.lireEntier(scanner, "Votre choix : ", 0, 4);
+                
+                switch (choix) {
+                    case 1 -> creerTournoi();
+                    case 2 -> {
+                        if (tournoiActuel != null) {
+                            gererTournoi();
+                        } else {
+                            OutputUtils.afficherErreurAucunTournoi();
+                        }
                     }
-                    break;
-                case 3: gererPersonnages(); break;
-                case 4: voirInfosJoueur(); break;
-                case 0: enCours = false; break;
-                default: System.out.println("Choix invalide, veuillez réessayer.");
+                    case 3 -> gererPersonnages();
+                    case 4 -> voirInfosJoueur();
+                    case 0 -> enCours = false;
+                    default -> System.out.println("Choix invalide, veuillez réessayer.");
+                }
             }
+            System.out.println("Merci d'avoir utilisé l'application. Au revoir !");
         }
-        System.out.println("Merci d'avoir utilisé l'application. Au revoir !");
-        scanner.close();
-    }
-
-    /**
-     * Affiche le menu principal
-     */
-    private void afficherMenuPrincipal() {
-        System.out.println("\n--- MENU PRINCIPAL ---");
-        if (tournoiActuel != null) {
-            System.out.println("Tournoi actuel : " + tournoiActuel.getVille() + " " + tournoiActuel.getAnnee());
-        } else {
-            System.out.println("Aucun tournoi chargé.");
-        }
-        System.out.println("1. Créer un nouveau Tournoi");
-        System.out.println("2. Gérer le Tournoi actuel");
-        System.out.println("3. Gérer les Personnages (Joueurs, Arbitres...)");
-        System.out.println("4. Voir les informations d'un Joueur");
-        System.out.println("0. Quitter");
     }
 
     // --- Méthodes du Menu Principal ---
@@ -105,12 +90,11 @@ public class Main {
      * Menu 1: Créer une instance de Tournoi
      */
     private void creerTournoi() {
-        System.out.println("\n--- Création d'un nouveau Tournoi ---");
-        System.out.print("Ville (1: Paris, 2: Melbourne, 3: Londres, 4: New York) : ");
-        int choixVille = lireEntier("", 1, 4);
+        OutputUtils.afficherCreerTournoi();
+        int choixVille = InputUtils.lireEntier(scanner, "", 1, 4);
         
         System.out.print("Année (ex: 2024) : ");
-        int annee = lireEntier("", 2020, 2030);
+        int annee = InputUtils.lireEntier(scanner,"", 2020, 2030);
 
         String ville;
         Surface surface;
@@ -123,7 +107,7 @@ public class Main {
         }
 
         this.tournoiActuel = new Tournoi(ville, annee, surface);
-        System.out.println("Tournoi de " + ville + " " + annee + " créé avec succès !");
+        OutputUtils.afficherCreationTournoi(ville, annee);
         
         tournoiActuel.inscrireListes(tousLesJoueurs, tousLesArbitres, tousLesSpectateurs);
     }
@@ -134,23 +118,16 @@ public class Main {
     private void gererTournoi() {
         boolean enCours = true;
         while (enCours) {
-            System.out.println("\n--- GESTION DU TOURNOI : " + tournoiActuel.getVille() + " ---");
-            System.out.println("1. Lancer le prochain tour");
-            System.out.println("2. Voir les matchs à venir");
-            System.out.println("3. Voir les matchs passés");
-            System.out.println("4. Voir les stats d'un match passé");
-            System.out.println("5. Obtenir une synthèse du tournoi");
-            System.out.println("0. Retour au menu principal");
-            
-            int choix = lireEntier("Votre choix : ", 0, 5);
+            OutputUtils.afficherMenuTournoi(tournoiActuel);
+            int choix = InputUtils.lireEntier(scanner,"Votre choix : ", 0, 5);
             
             switch (choix) {
-                case 1: tournoiActuel.lancerProchainTour(scanner); break;
-                case 2: tournoiActuel.afficherMatchsAVenir(); break;
-                case 3: tournoiActuel.afficherMatchsPasses(); break;
-                case 4: tournoiActuel.afficherDetailsMatch(scanner); break;
-                case 5: tournoiActuel.genererSynthese(); break;
-                case 0: enCours = false; break;
+                case 1 -> tournoiActuel.lancerProchainTour(scanner);
+                case 2 -> tournoiActuel.afficherMatchsAVenir();
+                case 3 -> tournoiActuel.afficherMatchsPasses();
+                case 4 -> tournoiActuel.afficherDetailsMatch(scanner);
+                case 5 -> tournoiActuel.genererSynthese();
+                case 0 -> enCours = false;
             }
         }
     }
@@ -159,21 +136,18 @@ public class Main {
      * Menu 3: Sous-menu de création de personnages
      */
     private void gererPersonnages() {
-        System.out.println("\n--- GESTION DES PERSONNAGES ---");
-        System.out.println("1. Créer un Joueur (personnalisé)");
-        System.out.println("2. Créer un Arbitre (personnalisé)");
-        System.out.println("3. Créer des participants automatiquement");
-        System.out.println("0. Retour au menu principal");
-        
-        int choix = lireEntier("Votre choix : ", 0, 3);
+        OutputUtils.afficherMenuPersonnages();
+        int choix = InputUtils.lireEntier(scanner,"Votre choix : ", 0, 3);
 
-        if (choix == 1) {
-            creerJoueurManuel();
-        } else if (choix == 2) {
-            System.out.println("Fonctionnalité de création d'arbitre à implémenter.");
-        } else if (choix == 3) {
-            creerParticipantsAutomatiquement(10, 10, 2, 20);
-            System.out.println("Participants auto. ajoutés ! Total joueurs: " + tousLesJoueurs.size());
+        switch (choix) {
+            case 1 -> creerJoueurManuel();
+            case 2 -> System.out.println("Fonctionnalité de création d'arbitre à implémenter.");
+            case 3 -> {
+                creerParticipantsAutomatiquement(10, 10, 2, 20);
+                System.out.println("Participants auto. ajoutés ! Total joueurs: " + tousLesJoueurs.size());
+            }
+            default -> {
+            }
         }
     }
     
@@ -187,15 +161,11 @@ public class Main {
             return;
         }
         
-        for (int i = 0; i < tousLesJoueurs.size(); i++) {
-            System.out.println((i+1) + ": " + tousLesJoueurs.get(i).toString());
-        }
-        int index = lireEntier("Choisissez un joueur (par son numéro) : ", 1, tousLesJoueurs.size());
+        OutputUtils.afficherListeJoueurs(tousLesJoueurs);
+        int index = InputUtils.lireEntier(scanner,"Choisissez un joueur (par son numéro) : ", 1, tousLesJoueurs.size());
         Joueur j = tousLesJoueurs.get(index - 1);
-        
-        System.out.println("\n--- Stats Carrière pour " + j.getPrenom() + " " + j.getNomCourant() + " ---");
-        System.out.println("Classement: " + j.getClassement());
-        System.out.println(j.getStatsCarriere().toString());
+    
+        OutputUtils.afficherInfosJoueur(j);
     }
 
 
@@ -225,26 +195,24 @@ public class Main {
     }
 
     /**
-     * (Req 2.a) Crée un joueur manuellement (avec validation de saisie).
+     * Crée un joueur manuellement (avec validation de saisie).
      */
     private void creerJoueurManuel() {
         System.out.println("\n--- Création d'un Joueur personnalisé ---");
         try {
-            // --- CORRECTION : Utilisation de la nouvelle méthode robuste ---
-            String nom = lireStringValide("Nom de naissance : ");
-            String prenom = lireStringValide("Prénom : ");
-            // --- FIN CORRECTION ---
+            String nom = InputUtils.lireStringValide(scanner,"Nom de naissance : ");
+            String prenom = InputUtils.lireStringValide(scanner,"Prénom : ");
             
             System.out.print("Année de naissance (ex: 1990) : ");
-            int an = lireEntier("", 1950, 2010);
+            int an = InputUtils.lireEntier(scanner,"", 1950, 2020);
             System.out.print("Mois (1-12) : ");
-            int mois = lireEntier("", 1, 12);
+            int mois = InputUtils.lireEntier(scanner,"", 1, 12);
             System.out.print("Jour (1-31) : ");
-            int jour = lireEntier("", 1, 31);
+            int jour = InputUtils.lireEntier(scanner,"", 1, 31);
             LocalDate dateN = LocalDate.of(an, mois, jour);
             
             System.out.print("Genre (1: Homme, 2: Femme) : ");
-            Genre genre = (lireEntier("", 1, 2) == 1) ? Genre.HOMME : Genre.FEMME;
+            Genre genre = (InputUtils.lireEntier(scanner,"", 1, 2) == 1) ? Genre.HOMME : Genre.FEMME;
             
             Joueur nouveauJoueur = new Joueur(nom, prenom, dateN, "Inconnu", "Inconnue", 180, 80, genre, MainDeJeu.DROITIER, "Aucun", "Lui-même");
             tousLesJoueurs.add(nouveauJoueur);
@@ -253,50 +221,9 @@ public class Main {
 
         } catch (Exception e) {
             // Gère les erreurs de date (ex: 31 Février) ou autres
-            System.out.println("Erreur lors de la création du joueur : " + e.getMessage());
+            SaisieInvalideException sie = new SaisieInvalideException("Erreur lors de la création du joueur : " + e.getMessage());
+            System.out.println(sie.getMessage());
         }
-    }
-
-    /**
-     * (Req 1.b) Outil robuste pour lire un entier au clavier.
-     */
-    private int lireEntier(String message, int min, int max) {
-        while (true) {
-            try {
-                System.out.print(message); 
-                int choix = scanner.nextInt();
-                scanner.nextLine(); // Consomme le \n
-                if (choix >= min && choix <= max) {
-                    return choix;
-                } else {
-                    System.out.println("Erreur : Le choix doit être entre " + min + " et " + max + ".");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Erreur : Veuillez entrer un nombre valide.");
-                scanner.nextLine(); // Nettoie le buffer
-            }
-        }
-    }
-    
-    /**
-     * AJOUT (Req 1.b) : Outil robuste pour lire un String non-vide et sans chiffres.
-     */
-    private String lireStringValide(String message) throws SaisieInvalideException {
-        System.out.print(message);
-        String input = scanner.nextLine();
-
-        // 1. Vérifie si c'est vide
-        if (input == null || input.trim().isEmpty()) {
-            throw new SaisieInvalideException("L'entrée ne peut pas être vide.");
-        }
-
-        // 2. Vérifie s'il y a des chiffres (ton exemple "2004")
-        // .*\d.* est une Regex qui signifie "contient au moins un chiffre"
-        if (input.matches(".*\\d.*")) {
-            throw new SaisieInvalideException("L'entrée ne doit pas contenir de chiffres.");
-        }
-        
-        return input;
     }
     
     /**

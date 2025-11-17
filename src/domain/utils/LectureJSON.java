@@ -8,15 +8,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class LectureJSON {
 
     public static Joueur lectureJSON(String json) {
-        
         System.out.println("Lecture du JSON : " + json);
-        Map<String, String> data = ParserJSON.parse(json);
+        Map<String, String> data = parse(json);
 
         System.out.println("Données extraites du JSON : " + data);
         // Création du Joueur à partir des valeurs extraites
@@ -53,6 +53,36 @@ public class LectureJSON {
         }
 
         return joueurs;
+    }
+
+
+    public static Map<String, String> parse(String json) {
+        Map<String, String> map = new HashMap<>();
+
+        json = json.trim();
+        if (json.startsWith("{")) json = json.substring(1);
+        if (json.endsWith("}")) json = json.substring(0, json.length() - 1);
+
+
+        String[] pairs = json.split(",");
+
+        for (String pair : pairs) {
+            String[] kv = pair.split(":", 2);
+            if (kv.length != 2) continue;
+
+            String key = clean(kv[0]);
+            String value = clean(kv[1]);
+
+            map.put(key, value);
+        }
+
+        return map;
+    }
+
+    private static String clean(String s) {
+        return s.trim()
+                .replace("\"", "")   
+                .trim();
     }
 
 }
