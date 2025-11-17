@@ -42,8 +42,7 @@ public class LectureJSON {
             contenu = contenu.substring(1, contenu.length() - 1); // enlève [ et ] du JSON
             String[] objets = contenu.split("\\},\\{");
 
-            for (int i = 0; i < objets.length; i++) {
-                String jsonObjet = objets[i];
+            for (String jsonObjet : objets) {
                 Joueur j = lectureJSON(jsonObjet); // On lit chaque objet JSON et on l'ajoute à la liste
                 joueurs.add(j);
             }

@@ -219,7 +219,7 @@ public class Main {
             
             System.out.println("SUCCÈS : " + prenom + " " + nom + " (Classement " + nouveauJoueur.getClassement() + ") a été créé !");
 
-        } catch (Exception e) {
+        } catch (SaisieInvalideException e) {
             // Gère les erreurs de date (ex: 31 Février) ou autres
             SaisieInvalideException sie = new SaisieInvalideException("Erreur lors de la création du joueur : " + e.getMessage());
             System.out.println(sie.getMessage());
