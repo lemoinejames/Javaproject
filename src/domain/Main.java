@@ -28,7 +28,7 @@ public class Main {
     private final List<Spectateur> tousLesSpectateurs;
 
     /**
-     * Constructeur de l'application.
+     * Constructeur de l'application, on initialise les listes et le scanner.
      */
     public Main() {
         this.scanner = new Scanner(System.in);
@@ -180,9 +180,9 @@ public class Main {
         List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin); // Lire des joueurs depuis le fichier JSON
         tousLesJoueurs.addAll(joueursH);
 
-        for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
+        /*for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
             tousLesJoueurs.add(new Joueur("Joueur_H", "AutoH" + (i+1), LocalDate.of(1990, 1, 1), "AutoVille", "AutoPays", 180, 80, Genre.HOMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
-        }
+        }*/
         for (int i = 0; i < nbFemmes; i++) {
             tousLesJoueurs.add(new Joueur("Joueuse_F", "AutoF" + (i+1), LocalDate.of(1992, 1, 1), "AutoVille", "AutoPays", 170, 60, Genre.FEMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
         }
