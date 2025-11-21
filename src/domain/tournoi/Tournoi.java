@@ -8,9 +8,9 @@ import domain.participants.Arbitre;
 import domain.participants.Joueur;
 import domain.participants.Spectateur;
 import domain.participants.Statistiques;
+import domain.utils.InputUtils;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -82,7 +82,7 @@ public class Tournoi {
     public void lancerProchainTour(Scanner scanner) {
         System.out.println("\n--- Lancement du prochain tour ---");
         System.out.println("Quelle catégorie ? (1: Hommes, 2: Femmes)");
-        int choixCat = lireEntier(scanner, "Choix : ", 1, 2);
+        int choixCat = InputUtils.lireEntier(scanner, "Choix : ", 1, 2);
         
         if (choixCat == 1) {
             jouerTableau(Categorie.SIMPLE_HOMMES, scanner);
@@ -153,7 +153,7 @@ public class Tournoi {
             }
         }
         
-        int index = lireEntier(scanner, "Choisir un match : ", 1, tousLesMatchs.size());
+        int index = InputUtils.lireEntier(scanner, "Choisir un match : ", 1, tousLesMatchs.size());
         Match match = tousLesMatchs.get(index - 1);
         
         
@@ -259,12 +259,12 @@ public class Tournoi {
             
             System.out.println("\nMatch à venir : " + j1.getPrenom() + " (Cl. " + j1.getClassement() + ") vs " + j2.getPrenom() + " (Cl. " + j2.getClassement() + ")");
             
-            int mode = lireEntier(scanner, "  Mode ? (1: Manuel, 2: Auto)", 1, 2);
+            int mode = InputUtils.lireEntier(scanner, "  Mode ? (1: Manuel, 2: Auto)", 1, 2);
             
             if (mode == 1) {
                 match.jouerMatch(scanner);
             } else {
-                int details = lireEntier(scanner, "  Afficher les détails ? (1: Oui, 2: Non)", 1, 2);
+                int details = InputUtils.lireEntier(scanner, "  Afficher les détails ? (1: Oui, 2: Non)", 1, 2);
                 boolean showDetails = (details == 1);
                 match.jouerMatch(showDetails);
             }
@@ -277,26 +277,6 @@ public class Tournoi {
         return vainqueurs;
     }
     
-    /**
-     * Outil robuste pour lire un entier au clavier.
-     */
-    private int lireEntier(Scanner scanner, String message, int min, int max) {
-        while (true) {
-            try {
-                System.out.println(message);
-                int choix = scanner.nextInt();
-                scanner.nextLine(); // Consomme le \n
-                if (choix >= min && choix <= max) {
-                    return choix;
-                } else {
-                    System.out.println("Erreur : Le choix doit être entre " + min + " et " + max + ".");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Erreur : Veuillez entrer un nombre valide.");
-                scanner.nextLine(); // Nettoie le buffer (très important)
-            }
-        }
-    }
     
     // --- Getters ---
     public String getVille() { return ville; }

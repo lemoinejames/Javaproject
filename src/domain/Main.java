@@ -177,7 +177,7 @@ public class Main {
     private void creerParticipantsAutomatiquement(int nbHommes, int nbFemmes, int nbArbitres, int nbSpecs) {
        
         String chemin = "src/domain/data/JoueurHomme.json"; 
-        List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin);
+        List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin); // Lire des joueurs depuis le fichier JSON
         tousLesJoueurs.addAll(joueursH);
 
         for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
@@ -200,6 +200,11 @@ public class Main {
     private void creerJoueurManuel() {
         System.out.println("\n--- Création d'un Joueur personnalisé ---");
         try {
+            if (tousLesJoueurs.size() >= 128) {
+                System.out.println("ERREUR : Nombre maximum de joueurs (128) atteint.");
+                supprimerJoueurManuel();
+                return;
+            }
             String nom = InputUtils.lireStringValide(scanner,"Nom de naissance : ");
             String prenom = InputUtils.lireStringValide(scanner,"Prénom : ");
             
@@ -225,7 +230,17 @@ public class Main {
             System.out.println(sie.getMessage());
         }
     }
+    /**
+     *  On supprimme un joueurs de la liste 
+     */
+    private void supprimerJoueurManuel() {
+        OutputUtils.afficherListeJoueurs(tousLesJoueurs);
+        int index = InputUtils.lireEntier(scanner,"Choisissez un joueur à supprimer (par son numéro) : ", 1, tousLesJoueurs.size());
+        Joueur j = tousLesJoueurs.get(index - 1);
     
+        tousLesJoueurs.remove(j);
+        System.out.println("SUCCÈS : " + j.getPrenom() + " " + j.getNomNaissance() + " a été supprimé !");
+    }
     /**
      *  Teste l'exception personnalisée au démarrage.
      */

@@ -20,7 +20,11 @@ public class Arbitre extends Personne {
         super(nomNaissance, prenom, dateNaissance, lieuNaissance, nationalite, taille, poids, genre);
         this.humeur = "Calme";
     }
-    
+
+    @Override
+    public String getRole() {
+        return "Arbitre de Tennis";
+    }
 
     public void deciderLitige(Joueur joueur) {
         System.out.println(joueur.getPrenom() + " conteste une décision. L'arbitre " + getPrenom() + " " + getNomCourant() + " réfléchit...");

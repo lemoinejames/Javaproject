@@ -41,6 +41,10 @@ public class Joueur extends Personne implements ComportementSpectateur {
     }
 
     
+    @Override
+    public String getRole() {
+        return "Joueur de Tennis";
+    }
 
     public void servir() {
         System.out.println(getPrenom() + " se prépare à servir...");

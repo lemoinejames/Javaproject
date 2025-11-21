@@ -36,6 +36,10 @@ public class Spectateur extends Personne implements ComportementSpectateur {
         }
     }
 
+    @Override
+    public String getRole() {
+        return "Spectateur ";
+    }
     
     @Override
     public void applaudir() {

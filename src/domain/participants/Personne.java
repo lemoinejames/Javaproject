@@ -92,7 +92,11 @@ public abstract class Personne {
         }
     }
 
-    // --- GETTERS ET SETTERS ---
+    // Méthodes abstraites 
+
+    public abstract String getRole();
+
+    // --- Getters et setters ---
 
     public String getNomNaissance() {
         return nomNaissance;
@@ -176,4 +180,6 @@ public abstract class Personne {
     public void setPoids(int poids) {
         this.poids = poids;
     }
+
+    
 }
