@@ -5,9 +5,14 @@ import domain.participants.Joueur;
 import domain.participants.Statistiques;
 import java.util.Scanner;
 
+
 /**
  * Représente un set (une manche) dans un match de tennis.
- * Gère le mode auto/manuel, la règle du set décisif et la collecte de stats.
+ * Gère le décompte des jeux, la règle du tie-break, la règle du set décisif
+ * et transmet les statistiques aux jeux.
+ *
+ * @author VotreNom
+ * @version 1.0
  */
 public class SetTennis {
 

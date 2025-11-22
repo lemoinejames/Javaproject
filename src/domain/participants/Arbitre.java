@@ -9,7 +9,11 @@ import java.time.LocalDate;
 import java.util.Random;
 
 /**
- * Classe représentant un arbitre de tennis.
+ * Représente un arbitre de tennis.
+ * Cette classe gère les annonces de score, les vainqueurs de jeux/sets
+ * et tranche les litiges soulevés par les joueurs.
+ * * @author Salah eddine & james 
+ * @version 1.0
  */
 public class Arbitre extends Personne {
     

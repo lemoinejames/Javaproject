@@ -9,7 +9,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Classe représentant un échange dans un jeu de tennis.
+ * Représente un échange (un point) dans un jeu de tennis.
+ * Gère le déroulement d'un point, du service jusqu'au coup gagnant,
+ * en mode automatique (simulation) ou manuel (saisie).
+ *
+ * @author salah eddine & james
+ * @version 1.0
  */
 public class Echange {
 
