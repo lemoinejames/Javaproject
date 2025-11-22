@@ -103,15 +103,20 @@ public class Statistiques {
     }
 
     public int getNbPointsRemportes() {
-        return nbPointsRemportes;
+        return this.nbPointsRemportes;
     }
-
+    public int getNbSecondServices() {
+        return this.nbSecondServices;
+    }
     public void setNbPointsRemportes(int nbPointsRemportes) {
         this.nbPointsRemportes = nbPointsRemportes;
     }
-
+   
+    public int getNbPremierServices() {
+        return this.nbPremierServices;
+    }
     public int getNbBallesDeBreak() {
-        return nbBallesDeBreak;
+        return this.nbBallesDeBreak;
     }
 
     public void setNbBallesDeBreak(int nbBallesDeBreak) {
@@ -119,7 +124,7 @@ public class Statistiques {
     }
 
     public int getNbBallesDeBreakRemportees() {
-        return nbBallesDeBreakRemportees;
+        return this.nbBallesDeBreakRemportees;
     }
 
     public void setNbBallesDeBreakRemportees(int nbBallesDeBreakRemportees) {
@@ -127,7 +132,7 @@ public class Statistiques {
     }
 
     public double getVitesseMoyennePremierService() {
-        return vitesseMoyennePremierService;
+        return this.vitesseMoyennePremierService;
     }
 
     public void setVitesseMoyennePremierService(double vitesseMoyennePremierService) {
@@ -135,7 +140,7 @@ public class Statistiques {
     }
 
     public double getVitesseMoyenneSecondService() {
-        return vitesseMoyenneSecondService;
+        return this.vitesseMoyenneSecondService;
     }
 
     public void setVitesseMoyenneSecondService(double vitesseMoyenneSecondService) {
@@ -143,7 +148,7 @@ public class Statistiques {
     }
 
     public int getNbMatchsJoues() {
-        return nbMatchsJoues;
+        return this.nbMatchsJoues;
     }
 
     public void setNbMatchsJoues(int nbMatchsJoues) {
@@ -151,7 +156,7 @@ public class Statistiques {
     }
 
     public int getNbMatchsRemportes() {
-        return nbMatchsRemportes;
+        return this.nbMatchsRemportes;
     }
 
     public void setNbMatchsRemportes(int nbMatchsRemportes) {
@@ -159,7 +164,7 @@ public class Statistiques {
     }
 
     public int getNbTournoisParticipes() {
-        return nbTournoisParticipes;
+        return this.nbTournoisParticipes;
     }
 
     public void setNbTournoisParticipes(int nbTournoisParticipes) {
@@ -167,7 +172,7 @@ public class Statistiques {
     }
 
     public double getTotalGains() {
-        return totalGains;
+        return this.totalGains;
     }
 
     public void setTotalGains(double totalGains) {

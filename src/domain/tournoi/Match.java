@@ -81,38 +81,53 @@ public class Match {
 
     // --- 2. MODE MANUEL ---
     public void jouerMatch(Scanner scanner) {
-        System.out.println("\n\n*************************************************");
-        System.out.println("********** DÉBUT DU MATCH (Manuel) **********");
-        System.out.println(joueur1.getPrenom() + " vs " + joueur2.getPrenom());
-        System.out.println("Arbitre : " + arbitre.getPrenom());
-        System.out.println("*************************************************");
+    System.out.println("\n\n*************************************************");
+    System.out.println("********** DÉBUT DU MATCH (Manuel) **********");
+    System.out.println(joueur1.getPrenom() + " vs " + joueur2.getPrenom());
+    System.out.println("Arbitre : " + arbitre.getPrenom());
+    System.out.println("*************************************************");
 
-        int setsPourGagner = (categorie == Categorie.SIMPLE_HOMMES) ? 3 : 2;
-        int maxSets = (categorie == Categorie.SIMPLE_HOMMES) ? 5 : 3;
-        Joueur serveurProchainSet = rand.nextBoolean() ? joueur1 : joueur2;
-        System.out.println("Tirage au sort : " + serveurProchainSet.getPrenom() + " servira en premier.");
+    int setsPourGagner = (categorie == Categorie.SIMPLE_HOMMES) ? 3 : 2;
+    int maxSets = (categorie == Categorie.SIMPLE_HOMMES) ? 5 : 3;
+    Joueur serveurProchainSet = rand.nextBoolean() ? joueur1 : joueur2;
+    System.out.println("Tirage au sort : " + serveurProchainSet.getPrenom() + " servira en premier.");
 
-        while (vainqueur == null) {
-            setsJoues++;
-            boolean estDecisif = (setsJoues == maxSets); 
+    while (vainqueur == null) {
+        setsJoues++;
+        boolean estDecisif = (setsJoues == maxSets); 
 
-            SetTennis setActuel = new SetTennis(joueur1, joueur2, arbitre, serveurProchainSet, estDecisif);
-            
-            setActuel.jouerSet(scanner, statsJoueur1, statsJoueur2); 
-
-            if (setActuel.getVainqueur() == joueur1) setsGagnesJoueur1++;
-            else setsGagnesJoueur2++;
-
-            arbitre.annoncerVainqueurSet(setActuel, this, true); 
-            serveurProchainSet = (serveurProchainSet == joueur1) ? joueur2 : joueur1;
-            verifierVainqueurMatch(setsPourGagner);
-        }
+        SetTennis setActuel = new SetTennis(joueur1, joueur2, arbitre, serveurProchainSet, estDecisif);
         
-        System.out.println("\n******************** FIN DU MATCH (Manuel) ********************");
-        System.out.println("Vainqueur : " + vainqueur.getPrenom() + " " + vainqueur.getNomCourant());
-        System.out.println("Score final : " + setsGagnesJoueur1 + " - " + setsGagnesJoueur2);
-        System.out.println("****************************************************");
+        setActuel.jouerSet(scanner, statsJoueur1, statsJoueur2); 
+
+        if (setActuel.getVainqueur() == joueur1) setsGagnesJoueur1++;
+        else setsGagnesJoueur2++;
+
+        arbitre.annoncerVainqueurSet(setActuel, this, true); 
+        serveurProchainSet = (serveurProchainSet == joueur1) ? joueur2 : joueur1;
+        
+        
+        verifierVainqueurMatch(setsPourGagner);
+        
+        // Si le match n'est pas encore terminé, proposer de continuer
+        if (vainqueur == null) {
+            System.out.print("\n[1] Continuer en mode manuel | [2] Passer en mode automatique pour terminer le match. (Choix : 1/2) : ");
+            int choix = scanner.nextInt();
+
+            if (choix == 2) {
+                System.out.println("\n-> Passage en mode AUTOMATIQUE. Le reste du match sera simulé.");
+                jouerMatch(true); // Appel de la méthode automatique
+                return; // On sort de la méthode manuelle pour éviter le double affichage de la fin de match
+            }
+        }
     }
+    
+    // Affichage de la fin du match manuel (n'est atteint que si le match est terminé manuellement)
+    System.out.println("\n******************** FIN DU MATCH (Manuel) ********************");
+    System.out.println("Vainqueur : " + vainqueur.getPrenom() + " " + vainqueur.getNomCourant());
+    System.out.println("Score final : " + setsGagnesJoueur1 + " - " + setsGagnesJoueur2);
+    System.out.println("****************************************************");
+}
     
     // --- LOGIQUE COMMUNE ---
     private void verifierVainqueurMatch(int setsPourGagner) {

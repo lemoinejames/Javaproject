@@ -87,5 +87,5 @@ public class LectureJSON {
                 .replace("\"", "")   
                 .trim();
     }
-
+    
 }
