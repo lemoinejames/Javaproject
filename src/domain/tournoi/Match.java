@@ -9,13 +9,16 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Représente un match de tennis complet.
- * Gère le mode automatique/manuel, la règle du set décisif
- * et la collecte des statistiques de match.
+ * Représente un match de tennis entre deux joueurs.
+ * Gère le déroulement du match en mode automatique ou manuel,
+ * le suivi des sets gagnés, et la désignation du vainqueur du match.
+ *
+ * @author Salah eddine & james 
+ * @version 1.0
  */
 public class Match {
 
-    // --- ATTRIBUTS ---
+                
     private final Joueur joueur1;
     private final Joueur joueur2;
     private final Arbitre arbitre;
@@ -44,6 +47,11 @@ public class Match {
     }
 
     // --- 1. MODE AUTOMATIQUE ---
+    /**
+     * Joue le match en mode AUTOMATIQUE.
+     *
+     * @param showDetails Si true, affiche le détail des sets et échanges.
+     */
     public void jouerMatch(boolean showDetails) {
         if (showDetails) {
             System.out.println("\n\n*************************************************");
@@ -80,6 +88,15 @@ public class Match {
     }
 
     // --- 2. MODE MANUEL ---
+
+    /**
+     * Lance le match en mode manuel (interactif).
+     * Permet à l'utilisateur de saisir le résultat de chaque point.
+     * Offre la possibilité de basculer en mode automatique à la fin d'un set.
+     *
+     * @param scanner Le scanner pour lire les entrées utilisateur.
+     */
+
     public void jouerMatch(Scanner scanner) {
     System.out.println("\n\n*************************************************");
     System.out.println("********** DÉBUT DU MATCH (Manuel) **********");
@@ -106,9 +123,11 @@ public class Match {
         arbitre.annoncerVainqueurSet(setActuel, this, true); 
         serveurProchainSet = (serveurProchainSet == joueur1) ? joueur2 : joueur1;
         
+
+
         
         verifierVainqueurMatch(setsPourGagner);
-        
+        /** */
         // Si le match n'est pas encore terminé, proposer de continuer
         if (vainqueur == null) {
             System.out.print("\n[1] Continuer en mode manuel | [2] Passer en mode automatique pour terminer le match. (Choix : 1/2) : ");
@@ -116,20 +135,28 @@ public class Match {
 
             if (choix == 2) {
                 System.out.println("\n-> Passage en mode AUTOMATIQUE. Le reste du match sera simulé.");
-                jouerMatch(true); // Appel de la méthode automatique
-                return; // On sort de la méthode manuelle pour éviter le double affichage de la fin de match
+                jouerMatch(true); 
+                return; 
             }
         }
     }
     
-    // Affichage de la fin du match manuel (n'est atteint que si le match est terminé manuellement)
+
     System.out.println("\n******************** FIN DU MATCH (Manuel) ********************");
     System.out.println("Vainqueur : " + vainqueur.getPrenom() + " " + vainqueur.getNomCourant());
     System.out.println("Score final : " + setsGagnesJoueur1 + " - " + setsGagnesJoueur2);
     System.out.println("****************************************************");
 }
     
-    // --- LOGIQUE COMMUNE ---
+   
+
+    /**
+     * Vérifie si un joueur a remporté le nombre de sets requis pour gagner le match.
+     * Si oui, met à jour le vainqueur, le perdant et les statistiques de carrière.
+     *
+     * @param setsPourGagner Le nombre de sets nécessaires (2 ou 3).
+     */
+
     private void verifierVainqueurMatch(int setsPourGagner) {
         if (setsGagnesJoueur1 == setsPourGagner && this.vainqueur == null) {
             this.vainqueur = joueur1;

@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
  * Représente un tournoi du Grand Chelem.
  * Gère la création des participants, la génération des tableaux
  * et le déroulement complet de la compétition.
+ *
+ * @author salah eddine & james
+ * @version 1.0
  */
 public class Tournoi {
 
@@ -31,7 +34,7 @@ public class Tournoi {
     private List<Joueur> joueursInscrits;
     private List<Arbitre> arbitresDisponibles;
     private List<Spectateur> spectateursPresents;
-    
+    // Listes pour stocker tous les matchs joués
     private final List<Match> tableauHommes;
     private final List<Match> tableauFemmes;
     
@@ -43,7 +46,13 @@ public class Tournoi {
     
     private final Random rand = new Random();
 
-    // --- CONSTRUCTEUR ---
+    /**
+     * Construit un nouveau tournoi.
+     *
+     * @param ville La ville du tournoi.
+     * @param annee L'année du tournoi.
+     * @param surface La surface de jeu.
+     */
     public Tournoi(String ville, int annee, Surface surface) {
         this.ville = ville;
         this.annee = annee;

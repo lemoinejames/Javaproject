@@ -16,6 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Point d'entrée principal de l'application de gestion de tournoi de tennis.
+ * Gère le menu principal, la création de tournois et de participants,
+ * ainsi que la navigation entre les différentes fonctionnalités.
+ *
+ * @author Salah eddine & james
+ * @version 1.0
+ */
 
 public class Main {
 
@@ -180,9 +188,9 @@ public class Main {
         List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin); // Lire des joueurs depuis le fichier JSON
         tousLesJoueurs.addAll(joueursH);
 
-        for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
+        /*for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
             tousLesJoueurs.add(new Joueur("Joueur_H", "AutoH" + (i+1), LocalDate.of(1990, 1, 1), "AutoVille", "AutoPays", 180, 80, Genre.HOMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
-        }
+        }*/
         for (int i = 0; i < nbFemmes; i++) {
             tousLesJoueurs.add(new Joueur("Joueuse_F", "AutoF" + (i+1), LocalDate.of(1992, 1, 1), "AutoVille", "AutoPays", 170, 60, Genre.FEMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
         }
