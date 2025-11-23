@@ -16,9 +16,9 @@ public abstract class Personne {
 
     // --- ATTRIBUTS ---
 
-    private final String nomNaissance;
-    private String nomCourant;
-    private String prenom;
+    protected final String nomNaissance;
+    protected String nomCourant;
+    protected String prenom;
     private String surnom;
     private final LocalDate dateNaissance;
     private final String lieuNaissance;

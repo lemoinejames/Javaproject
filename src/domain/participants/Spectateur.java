@@ -46,21 +46,21 @@ public class Spectateur extends Personne implements ComportementSpectateur {
     
     @Override
     public void applaudir() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " applaudit dans la tribune " + this.tribune + " !");
+        System.out.println(this.prenom + " " + this.nomCourant + " applaudit dans la tribune " + this.tribune + " !");
     }
 
     @Override
     public void crier() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " crie 'Allez !'");
+        System.out.println(this.prenom + " " + this.nomCourant +  " crie 'Allez !'");
     }
 
     @Override
     public void huer() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " hue l'arbitre !");
+        System.out.println(this.prenom + " " + this.nomCourant +  " hue l'arbitre !");
     }
     @Override
     public void dormir() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " s'endort... ZzzZzz...");
+        System.out.println(this.prenom + " " + this.nomCourant +  " s'endort... ZzzZzz...");
     }
 
     // --- GETTERS ET SETTERS ---
@@ -104,7 +104,7 @@ public class Spectateur extends Personne implements ComportementSpectateur {
     public void setCouleurChemise(String couleurChemise) {
     if (getGenre() == Genre.HOMME) {
         this.couleurChemise = couleurChemise;
-        System.out.println(getPrenom() + " " + getNomCourant() + " met en évidence sa nouvelle chemise " + couleurChemise + " !");
+        System.out.println(this.prenom + " " + this.nomCourant + " met en évidence sa nouvelle chemise " + couleurChemise + " !");
     }
 }
 

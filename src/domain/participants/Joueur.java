@@ -47,24 +47,24 @@ public class Joueur extends Personne implements ComportementSpectateur {
     }
 
     public void servir() {
-        System.out.println(getPrenom() + " se prépare à servir...");
+        System.out.println(this.prenom + " se prépare à servir...");
     }
 
     public void appelerArbitre(Arbitre arbitre) {
-        System.out.println(getPrenom() + " lève la main et appelle l'arbitre !");
+        System.out.println(this.prenom + " lève la main et appelle l'arbitre !");
         arbitre.deciderLitige(this); 
     }
     
     public void boire() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " boit une gorgée d'eau.");
+        System.out.println(this.prenom + " " + this.nomCourant +  " boit une gorgée d'eau.");
     }
   
     public void sEncourager() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " crie 'Come on!'");
+        System.out.println(this.prenom + " " + this.nomCourant + " crie 'Come on!'");
     }
     
     public void crierVictoire() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " lève les bras et crie sa victoire !");
+        System.out.println(this.prenom + " " + this.nomCourant +  " lève les bras et crie sa victoire !");
     }
    
     @Override
@@ -74,21 +74,21 @@ public class Joueur extends Personne implements ComportementSpectateur {
     
     @Override
     public void applaudir() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " applaudit son adversaire depuis les gradins.");
+        System.out.println(this.prenom + " " + this.nomCourant + " applaudit son adversaire depuis les gradins.");
     }
     @Override
     public void crier() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " crie pour encourager un collègue.");
+        System.out.println(this.prenom + " " + this.nomCourant +  " crie pour encourager un collègue.");
     }
 
     @Override
     public void huer() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " (depuis les gradins) : 'C'était faute !'");
+        System.out.println(this.prenom + " " + this.nomCourant +  " (depuis les gradins) : 'C'était faute !'");
     }
 
     @Override
     public void dormir() {
-        System.out.println(getPrenom() + " " + getNomCourant() + " se repose les yeux dans les tribunes.");
+        System.out.println(this.prenom + " " + this.nomCourant +  " se repose les yeux dans les tribunes.");
     }
     
     // --- Getters Setters ---
@@ -107,7 +107,7 @@ public class Joueur extends Personne implements ComportementSpectateur {
    
     public void setTenue(String tenue) {
         this.tenue = tenue;
-        System.out.println(getPrenom() + " " + getNomCourant() + " annonce un changement de tenue !");
+        System.out.println(this.prenom + " " + this.nomCourant +  " annonce un changement de tenue !");
     }
     
     public Statistiques getStatsCarriere() { return statsCarriere; }

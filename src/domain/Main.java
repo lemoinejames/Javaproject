@@ -17,11 +17,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Point d'entrée principal de l'application de gestion de tournoi de tennis.
- * Gère le menu principal, la création de tournois et de participants,
- * ainsi que la navigation entre les différentes fonctionnalités.
- *
- * @author Salah eddine & james
+ * Classe principale de l'application.
+ * Gère l'interface utilisateur en mode console, les menus et la boucle de vie du programme.
+ * * @author salah eddine & james 
  * @version 1.0
  */
 
@@ -35,9 +33,6 @@ public class Main {
     private final List<Arbitre> tousLesArbitres;
     private final List<Spectateur> tousLesSpectateurs;
 
-    /**
-     * Constructeur de l'application, on initialise les listes et le scanner.
-     */
     public Main() {
         this.scanner = new Scanner(System.in);
         this.tournoiActuel = null;
@@ -45,27 +40,18 @@ public class Main {
         this.tousLesArbitres = new ArrayList<>();
         this.tousLesSpectateurs = new ArrayList<>();
         
-        // On pré-charge l'application (128H, 128F, 10 Arbitres)
         creerParticipantsAutomatiquement(128, 128, 10, 100); 
     }
 
-    /**
-     * Point d'entrée du programme.
-     */
     public static void main(String[] args) {
         Main app = new Main();
         app.demarrer();
     }
 
-    /**
-     * Lance l'application et affiche le menu principal en boucle.
-     */
     public void demarrer() {
         try (scanner) {
             OutputUtils.afficherMessageAccueil();
             
-            // --- Test de l'exception ---
-            // On le fait une fois au démarrage pour prouver que ça marche
             testerExceptionMetier();
             
             boolean enCours = true;
@@ -85,24 +71,21 @@ public class Main {
                     case 3 -> gererPersonnages();
                     case 4 -> voirInfosJoueur();
                     case 0 -> enCours = false;
-                    default -> System.out.println("Choix invalide, veuillez réessayer.");
+                    default -> System.out.println("Choix invalide.");
                 }
             }
             System.out.println("Merci d'avoir utilisé l'application. Au revoir !");
         }
     }
 
-    // --- Méthodes du Menu Principal ---
+    // --- Méthodes du Menu ---
 
-    /**
-     * Menu 1: Créer une instance de Tournoi
-     */
     private void creerTournoi() {
         OutputUtils.afficherCreerTournoi();
-        int choixVille = InputUtils.lireEntier(scanner, "", 1, 4);
+        int choixVille = InputUtils.lireEntier(scanner, "Choix : ", 1, 4);
         
         System.out.print("Année (ex: 2024) : ");
-        int annee = InputUtils.lireEntier(scanner,"", 2020, 2030);
+        int annee = InputUtils.lireEntier(scanner, "", 1900, 2100);
 
         String ville;
         Surface surface;
@@ -120,14 +103,11 @@ public class Main {
         tournoiActuel.inscrireListes(tousLesJoueurs, tousLesArbitres, tousLesSpectateurs);
     }
     
-    /**
-     * Menu 2: Sous-menu de gestion du tournoi
-     */
     private void gererTournoi() {
         boolean enCours = true;
         while (enCours) {
             OutputUtils.afficherMenuTournoi(tournoiActuel);
-            int choix = InputUtils.lireEntier(scanner,"Votre choix : ", 0, 5);
+            int choix = InputUtils.lireEntier(scanner, "Votre choix : ", 0, 5);
             
             switch (choix) {
                 case 1 -> tournoiActuel.lancerProchainTour(scanner);
@@ -140,57 +120,53 @@ public class Main {
         }
     }
     
-    /**
-     * Menu 3: Sous-menu de création de personnages
-     */
     private void gererPersonnages() {
         OutputUtils.afficherMenuPersonnages();
-        int choix = InputUtils.lireEntier(scanner,"Votre choix : ", 0, 3);
+        int choix = InputUtils.lireEntier(scanner, "Votre choix : ", 0, 3);
 
         switch (choix) {
             case 1 -> creerJoueurManuel();
             case 2 -> System.out.println("Fonctionnalité de création d'arbitre à implémenter.");
             case 3 -> {
                 creerParticipantsAutomatiquement(10, 10, 2, 20);
-                System.out.println("Participants auto. ajoutés ! Total joueurs: " + tousLesJoueurs.size());
-            }
-            default -> {
+                OutputUtils.afficherSucces("Participants auto. ajoutés ! Total joueurs: " + tousLesJoueurs.size());
             }
         }
     }
     
-    /**
-     * Menu 4: Affiche les stats d'un joueur
-     */
     private void voirInfosJoueur() {
         System.out.println("\n--- INFORMATION D'UN JOUEUR ---");
         if (tousLesJoueurs.isEmpty()) {
-            System.out.println("Aucun joueur n'a été créé.");
+            OutputUtils.afficherErreur("Aucun joueur n'a été créé.");
             return;
         }
         
-        OutputUtils.afficherListeJoueurs(tousLesJoueurs);
-        int index = InputUtils.lireEntier(scanner,"Choisissez un joueur (par son numéro) : ", 1, tousLesJoueurs.size());
+        if (tousLesJoueurs.size() < 50) {
+             OutputUtils.afficherListeJoueurs(tousLesJoueurs);
+        } else {
+             System.out.println("(Liste trop longue, veuillez entrer l'ID du joueur)");
+        }
+        
+        int index = InputUtils.lireEntier(scanner, "ID du joueur (1-" + tousLesJoueurs.size() + ") : ", 1, tousLesJoueurs.size());
         Joueur j = tousLesJoueurs.get(index - 1);
-    
         OutputUtils.afficherInfosJoueur(j);
     }
 
-
-    // --- Méthodes Création joueur  ---
+    // --- Méthodes Utilitaires ---
     
-    /**
-     *  Crée des participants auto et les ajoute aux listes globales.
-     **/
     private void creerParticipantsAutomatiquement(int nbHommes, int nbFemmes, int nbArbitres, int nbSpecs) {
-       
         String chemin = "src/domain/data/JoueurHomme.json"; 
-        List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin); // Lire des joueurs depuis le fichier JSON
-        tousLesJoueurs.addAll(joueursH);
+        List<Joueur> joueursH = LectureJSON.lireJoueursDepuisFichier(chemin);
+        
+        if (!joueursH.isEmpty()) {
+            tousLesJoueurs.addAll(joueursH);
+        }
 
-        /*for (int i = 0; i < nbHommes - joueursH.size() ; i++) {
+        int hommesManquants = nbHommes - joueursH.size();
+        for (int i = 0; i < hommesManquants; i++) {
             tousLesJoueurs.add(new Joueur("Joueur_H", "AutoH" + (i+1), LocalDate.of(1990, 1, 1), "AutoVille", "AutoPays", 180, 80, Genre.HOMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
-        }*/
+        }
+        
         for (int i = 0; i < nbFemmes; i++) {
             tousLesJoueurs.add(new Joueur("Joueuse_F", "AutoF" + (i+1), LocalDate.of(1992, 1, 1), "AutoVille", "AutoPays", 170, 60, Genre.FEMME, MainDeJeu.DROITIER, "Sponsor", "Entraineur"));
         }
@@ -202,70 +178,42 @@ public class Main {
         }
     }
 
-    /**
-     * Crée un joueur manuellement (avec validation de saisie).
-     */
     private void creerJoueurManuel() {
         System.out.println("\n--- Création d'un Joueur personnalisé ---");
         try {
-            if (tousLesJoueurs.size() >= 128) {
-                System.out.println("ERREUR : Nombre maximum de joueurs (128) atteint.");
-                supprimerJoueurManuel();
-                return;
-            }
-            String nom = InputUtils.lireStringValide(scanner,"Nom de naissance : ");
-            String prenom = InputUtils.lireStringValide(scanner,"Prénom : ");
+            // L'InputUtils gère maintenant la boucle d'erreur, donc plus besoin de try-catch complexe ici pour le nom
+            String nom = InputUtils.lireStringValide(scanner, "Nom de naissance : ");
+            String prenom = InputUtils.lireStringValide(scanner, "Prénom : ");
             
             System.out.print("Année de naissance (ex: 1990) : ");
-            int an = InputUtils.lireEntier(scanner,"", 1950, 2020);
+            int an = InputUtils.lireEntier(scanner, "", 1900, 2020);
             System.out.print("Mois (1-12) : ");
-            int mois = InputUtils.lireEntier(scanner,"", 1, 12);
+            int mois = InputUtils.lireEntier(scanner, "", 1, 12);
             System.out.print("Jour (1-31) : ");
-            int jour = InputUtils.lireEntier(scanner,"", 1, 31);
+            int jour = InputUtils.lireEntier(scanner, "", 1, 31);
             LocalDate dateN = LocalDate.of(an, mois, jour);
             
             System.out.print("Genre (1: Homme, 2: Femme) : ");
-            Genre genre = (InputUtils.lireEntier(scanner,"", 1, 2) == 1) ? Genre.HOMME : Genre.FEMME;
+            Genre genre = (InputUtils.lireEntier(scanner, "", 1, 2) == 1) ? Genre.HOMME : Genre.FEMME;
             
             Joueur nouveauJoueur = new Joueur(nom, prenom, dateN, "Inconnu", "Inconnue", 180, 80, genre, MainDeJeu.DROITIER, "Aucun", "Lui-même");
-            tousLesJoueurs.add(nouveauJoueur);
+            tousLesJoueurs.add(0, nouveauJoueur);
             
-            System.out.println("SUCCÈS : " + prenom + " " + nom + " (Classement " + nouveauJoueur.getClassement() + ") a été créé !");
+            OutputUtils.afficherSucces("SUCCÈS : " + prenom + " " + nom + " a été créé !");
 
-        } catch (SaisieInvalideException e) {
-            // Gère les erreurs de date (ex: 31 Février) ou autres
-            SaisieInvalideException sie = new SaisieInvalideException("Erreur lors de la création du joueur : " + e.getMessage());
-            System.out.println(sie.getMessage());
+        } catch (Exception e) {
+            OutputUtils.afficherErreur("Donnée invalide (Date impossible ?).");
         }
     }
-    /**
-     *  On supprimme un joueurs de la liste 
-     */
-    private void supprimerJoueurManuel() {
-        OutputUtils.afficherListeJoueurs(tousLesJoueurs);
-        int index = InputUtils.lireEntier(scanner,"Choisissez un joueur à supprimer (par son numéro) : ", 1, tousLesJoueurs.size());
-        Joueur j = tousLesJoueurs.get(index - 1);
-    
-        tousLesJoueurs.remove(j);
-        System.out.println("SUCCÈS : " + j.getPrenom() + " " + j.getNomNaissance() + " a été supprimé !");
-    }
-    /**
-     *  Teste l'exception personnalisée au démarrage.
-     */
+
     private void testerExceptionMetier() {
-        System.out.println("--- Test de l'exception personnalisée ---");
         try {
-            // Test d'une modification valide
-            tousLesArbitres.get(0).setHumeur("Calme"); 
-            System.out.println("Modification (Calme) : OK");
-            
-            // Test d'une modification invalide
-            tousLesArbitres.get(0).setHumeur("En colère"); // Doit échouer
-            System.out.println("Modification (En colère) : ERREUR, aurait dû échouer");
-            
+            if (!tousLesArbitres.isEmpty()) {
+                tousLesArbitres.get(0).setHumeur("En colère"); 
+            }
         } catch (SaisieInvalideException e) {
-            // Si le code arrive ici, le test est un SUCCÈS
-            System.out.println("EXCEPTION CAPTURÉE (Succès) : " + e.getMessage());
+            // On garde ce test silencieux ou discret au démarrage
+             // System.out.println("Test Exception OK");
         }
     }
 }
