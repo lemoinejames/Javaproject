@@ -212,7 +212,6 @@ public class Tournoi {
             Joueur vH = getVainqueur(Categorie.SIMPLE_HOMMES);
             if (vH != null) {
                 String cheminH = "src/domain/data/" + ville + annee + "_STATS_" + vH.getNomCourant() + "_H.json";
-                // Appel de la classe utilitaire externe
                 domain.utils.EcritureJSON.ecrireStatsJoueur(vH, cheminH);
                 System.out.println("Vainqueur Hommes : " + vH.getPrenom() + " " + vH.getNomCourant());
             }
@@ -257,49 +256,54 @@ public class Tournoi {
 
     // --- Logique interne tournoi ---
 
-    private void jouerTableau(Categorie categorie, Scanner scanner) {
-        List<Joueur> participants;
-        int tourActuel;
-        
-        if (categorie == Categorie.SIMPLE_HOMMES) {
-            tourActuel = this.tourActuelHommes;
-            participants = (tourActuel == 0) ? 
-                joueursInscrits.stream().filter(j -> j.getGenre() == Genre.HOMME).collect(Collectors.toList()) : 
-                this.vainqueursTourHommes;
-        } else {
-            tourActuel = this.tourActuelFemmes;
-            participants = (tourActuel == 0) ? 
-                joueursInscrits.stream().filter(j -> j.getGenre() == Genre.FEMME).collect(Collectors.toList()) : 
-                this.vainqueursTourFemmes;
-        }
+    // Dans la classe Tournoi
 
-        if (tourActuel >= tours.size()) {
-            System.out.println("Le tournoi pour cette catégorie est déjà terminé !");
-            return;
-        }
-        
-        if (participants.size() > 128) {
-             participants = new ArrayList<>(participants.subList(0, 128));
-             System.out.println("Plus de 128 joueurs, sélection des 128 premiers.");
-        }
-        if (participants.size() < 2) {
-             System.out.println("Le tournoi pour cette catégorie est terminé (vainqueur déjà trouvé).");
-             return;
-        }
+private void jouerTableau(Categorie categorie, Scanner scanner) {
+    List<Joueur> participants;
+    int tourActuel;
 
-        System.out.println("\n--- Début du " + tours.get(tourActuel) + " (" + categorie + ") ---");
-        
-        List<Joueur> vainqueursDuTour = jouerTour(participants, categorie, tours.get(tourActuel), (tourActuel == 0), scanner);
-        
-        if (categorie == Categorie.SIMPLE_HOMMES) {
-            this.vainqueursTourHommes = vainqueursDuTour;
-            this.tourActuelHommes++;
-        } else {
-            this.vainqueursTourFemmes = vainqueursDuTour;
-            this.tourActuelFemmes++;
-        }
+    if (categorie == Categorie.SIMPLE_HOMMES) {
+        tourActuel = this.tourActuelHommes;
+        participants = (tourActuel == 0) ? 
+            joueursInscrits.stream().filter(j -> j.getGenre() == Genre.HOMME).collect(Collectors.toList()) : 
+            this.vainqueursTourHommes;
+    } else {
+        tourActuel = this.tourActuelFemmes;
+        participants = (tourActuel == 0) ? 
+            joueursInscrits.stream().filter(j -> j.getGenre() == Genre.FEMME).collect(Collectors.toList()) : 
+            this.vainqueursTourFemmes;
+    }
+
+    if (tourActuel >= tours.size()) {
+        System.out.println("Le tournoi pour cette catégorie est déjà terminé !");
+        return;
     }
     
+    System.out.println("\n--- Début du " + tours.get(tourActuel) + " (" + categorie + ") ---");
+    System.out.println("\nComment voulez-vous jouer ce tour ?");
+    System.out.println("1: Manuel (interaction à chaque match)");
+    System.out.println("2: Automatique (simulation rapide)");
+    int modeGlobal = InputUtils.lireEntier(scanner, "Choix : ", 1, 2);
+    
+    
+    List<Joueur> vainqueursDuTour;
+    boolean estPremierTour = (tourActuel == 0);
+    
+    if (modeGlobal == 1) {
+        vainqueursDuTour = jouerTour(participants, categorie, tours.get(tourActuel), estPremierTour, scanner);
+    } else {
+        vainqueursDuTour = jouerTourAutomatique(participants, categorie, tours.get(tourActuel), estPremierTour);
+    }
+    
+   
+    if (categorie == Categorie.SIMPLE_HOMMES) {
+        this.vainqueursTourHommes = vainqueursDuTour;
+        this.tourActuelHommes++;
+    } else {
+        this.vainqueursTourFemmes = vainqueursDuTour;
+        this.tourActuelFemmes++;
+    }
+}
     private List<Joueur> jouerTour(List<Joueur> joueursParticipants, Categorie categorie, Niveau niveau, boolean estPremierTour, Scanner scanner) {
         
         List<Joueur> vainqueurs = new ArrayList<>();
@@ -339,7 +343,44 @@ public class Tournoi {
         System.out.println(vainqueurs.size() * 2 + " joueurs ont joué, " + vainqueurs.size() + " vainqueurs passent au tour suivant.");
         return vainqueurs;
     }
+
+    private List<Joueur> jouerTourAutomatique(List<Joueur> joueursParticipants, Categorie categorie, Niveau niveau, boolean estPremierTour) {
+    List<Joueur> vainqueurs = new ArrayList<>();
+    List<Match> tableauPrincipal = (categorie == Categorie.SIMPLE_HOMMES) ? tableauHommes : tableauFemmes;
+
+    // Mélange des joueurs uniquement au premier tour
+    if (estPremierTour) {
+        Collections.shuffle(joueursParticipants, rand);
+    }
+
+    for (int i = 0; i < joueursParticipants.size(); i += 2) {
+        Joueur j1 = joueursParticipants.get(i);
+        Joueur j2 = joueursParticipants.get(i + 1);
+        
+        // Vérification critique des arbitres
+        if (arbitresDisponibles.isEmpty()) {
+            System.out.println("ERREUR CRITIQUE : Plus d'arbitres disponibles ! Arrêt de la simulation.");
+            return vainqueurs;
+        }
+        
+        
+        Arbitre arbitre = arbitresDisponibles.get(rand.nextInt(arbitresDisponibles.size()));
+        Match match = new Match(j1, j2, arbitre, categorie, niveau);
+        
+        // Affichage du match avant la simulation
+        System.out.println("\n[AUTO] Match : " + j1.getPrenom() + " (Cl. " + j1.getClassement() + ") vs " + j2.getPrenom() + " (Cl. " + j2.getClassement() + ")");
+        
+       
+        match.jouerMatch(false);
+        
+        
+        vainqueurs.add(match.getVainqueur());
+        tableauPrincipal.add(match);
+    }
     
+    System.out.println(vainqueurs.size() * 2 + " joueurs ont joué, " + vainqueurs.size() + " vainqueurs passent au tour suivant.");
+    return vainqueurs;
+}
     
     // --- Getters ---
     public String getVille() { return ville; }

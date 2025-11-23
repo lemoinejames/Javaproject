@@ -45,12 +45,12 @@ public class Echange {
     public void jouer(boolean showDetails) {
         this.nombreDeServices = 1;
         this.statutService = simulerService(); 
-        this.statsServeur.incrementerPremierServices();
+        statsServeur.incrementerPremierServices();
 
         switch (this.statutService) {
             case ACE -> { 
                 if(showDetails) System.out.println("ACE!");
-                this.statsServeur.incrementerAces();
+                statsServeur.incrementerAces();
                 this.vainqueur = this.joueurAuService;
             }
             case LET -> { 
@@ -75,11 +75,11 @@ public class Echange {
     private void jouerDeuxiemeBalle(boolean showDetails) {
         this.nombreDeServices = 2;
         this.statutService = simulerService(); 
-        this.statsServeur.incrementerSecondServices();
+        statsServeur.incrementerSecondServices();
         switch (this.statutService) {
             case ACE -> { 
                 if(showDetails) System.out.println("ACE (2e balle)!");
-                this.statsServeur.incrementerAces();
+                statsServeur.incrementerAces();
                 this.vainqueur = this.joueurAuService;
             }
             case LET -> { 
@@ -91,7 +91,7 @@ public class Echange {
                 this.statsServeur.incrementerDoublesFautes(); 
                 this.statutService= StatutService.DOUBLE_FAUTE;
                 this.vainqueur = this.receveur;
-                this.statsReceveur.incrementerPointRemportes();
+                statsReceveur.incrementerPointRemportes();
             }
             case CORRECT -> { 
                 if(showDetails) System.out.println("Service correct (2e balle)");
@@ -106,9 +106,16 @@ public class Echange {
 
 
     private void simulerVainqueurEchange(boolean showDetails) {
-        this.vainqueur = rand.nextBoolean() ? this.joueurAuService : this.receveur;
-        if(showDetails) System.out.println("Point remporté par " + this.vainqueur.getPrenom());
+    this.vainqueur = rand.nextBoolean() ? this.joueurAuService : this.receveur;
+    
+   
+    if (this.vainqueur == this.joueurAuService) {
+        statsServeur.incrementerPointRemportes();
+    } else {
+        statsReceveur.incrementerPointRemportes();
     }
+    if(showDetails) System.out.println("Point remporté par " + this.vainqueur.getPrenom());
+}
     
     private StatutService simulerService() {
         int r = rand.nextInt(100);

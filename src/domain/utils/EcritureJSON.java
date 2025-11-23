@@ -7,13 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-/**
- * Utilitaire pour écrire les statistiques des joueurs dans des fichiers JSON.
- * Permet de sauvegarder les performances de carrière des joueurs.
- *
- * @author salah eddine & james
- * @version 1.0
- */
+import java.util.Locale; 
 
 public class EcritureJSON {
 
@@ -22,26 +16,55 @@ public class EcritureJSON {
         Statistiques stats = joueur.getStatsCarriere(); 
         int nbDefaites = stats.getNbMatchsJoues() - stats.getNbMatchsRemportes();
         
-        // Construction du contenu détaillé du fichier de statistiques
+        String jsonTemplate = 
+            """
+            {
+                "date_enregistrement": "%s",
+                "joueur": {
+                    "nom": "%s",
+                    "prenom": "%s",
+                    "classement": %d,
+                    "nationalite": "%s"
+                },
+                "statistiques_carriere": {
+                    "matchs_joues": %d,
+                    "victoires": %d,
+                    "defaites": %d,
+                    "gains_totaux": %.2f,
+                    "tournois_participes": %d,
+                    "nb_aces": %d,
+                    "doubles_fautes": %d,
+                    "points_remportes_cumules": %d,
+                    "premier_services": %d,
+                    "second_services": %d,
+                    "balles_break_gagnees": %d,
+                    "balles_break_total": %d,
+                    "vitesse_moy_premier_service": %.1f,
+                    "vitesse_moy_second_service": %.1f
+                }
+            }
+            """;
+        
+        // --- UTILISATION DE LOCALE.US POUR LE FORMATAGE DES FLOAT/DOUBLE (%.2f, %.1f) ---
         String contenuAecrire = String.format(
+            Locale.US, 
+            jsonTemplate,
             LocalDateTime.now().toString(),
-            joueur.getPrenom(), joueur.getNomCourant(), joueur.getClassement(), joueur.getNationalite(),
+            joueur.getNomCourant(), joueur.getPrenom(), joueur.getClassement(), joueur.getNationalite(),
             stats.getNbMatchsJoues(),
             stats.getNbMatchsRemportes(), nbDefaites,
-            stats.getTotalGains(),
+            stats.getTotalGains(), 
             stats.getNbTournoisParticipes(),
-            
             stats.getNbAces(),
             stats.getNbDoublesFautes(),
             stats.getNbPointsRemportes(),
             stats.getNbPremierServices(), stats.getNbSecondServices(),
             stats.getNbBallesDeBreakRemportees(), stats.getNbBallesDeBreak(),
-            stats.getVitesseMoyennePremierService(), stats.getVitesseMoyenneSecondService()
+            stats.getVitesseMoyennePremierService(), 
+            stats.getVitesseMoyenneSecondService() 
         );
 
         try {
-            // Utilisation de StandardOpenOption.CREATE et APPEND
-            // pour créer le fichier s'il n'existe pas et ajouter le contenu à la fin.
             Files.write(
                 Paths.get(cheminFichier), 
                 contenuAecrire.getBytes(), 

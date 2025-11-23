@@ -72,7 +72,16 @@ public class Statistiques {
     public void ajouterGains(double gains) {
         this.totalGains += gains;
     }
-
+    public void cumulerStats(Statistiques autresStats) {
+    
+    this.nbAces += autresStats.getNbAces();
+    this.nbDoublesFautes += autresStats.getNbDoublesFautes();
+    this.nbPointsRemportes += autresStats.getNbPointsRemportes();
+    this.nbPremierServices += autresStats.getNbPremierServices();
+    this.nbSecondServices += autresStats.getNbSecondServices();
+    this.nbBallesDeBreak += autresStats.getNbBallesDeBreak();
+    this.nbBallesDeBreakRemportees += autresStats.getNbBallesDeBreakRemportees();
+}
     // --- GETTERS ET SETTERS (générés automatiquement) ---
 
     @Override
@@ -87,7 +96,7 @@ public class Statistiques {
     }
     
     public int getNbAces() {
-        return nbAces;
+        return this.nbAces;
     }
 
     public void setNbAces(int nbAces) {
@@ -95,7 +104,7 @@ public class Statistiques {
     }
 
     public int getNbDoublesFautes() {
-        return nbDoublesFautes;
+        return this.nbDoublesFautes;
     }
 
     public void setNbDoublesFautes(int nbDoublesFautes) {

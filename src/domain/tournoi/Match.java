@@ -171,10 +171,21 @@ public class Match {
 
     private void mettreAJourStatistiquesCarriere() {
         System.out.println("Mise à jour des statistiques de carrière...");
-        this.vainqueur.getStatsCarriere().incrementerMatchsJoues();
-        this.vainqueur.getStatsCarriere().incrementerMatchsRemportes();
-        this.perdant.getStatsCarriere().incrementerMatchsJoues();
-    }
+        
+        // --- 1. MISE À JOUR DU VAINQUEUR ---
+        Statistiques statsCarriereVainqueur = this.vainqueur.getStatsCarriere();
+        Statistiques statsMatchVainqueur = (this.vainqueur == this.joueur1) ? this.statsJoueur1 : this.statsJoueur2;
+        statsCarriereVainqueur.cumulerStats(statsMatchVainqueur); 
+        statsCarriereVainqueur.incrementerMatchsJoues();
+        statsCarriereVainqueur.incrementerMatchsRemportes();
+        
+        
+        // --- 2. MISE À JOUR DU PERDANT ---
+        Statistiques statsCarrierePerdant = this.perdant.getStatsCarriere();
+        Statistiques statsMatchPerdant = (this.perdant == this.joueur1) ? this.statsJoueur1 : this.statsJoueur2;
+        statsCarrierePerdant.cumulerStats(statsMatchPerdant);
+        statsCarrierePerdant.incrementerMatchsJoues();
+}
 
     // --- Getters ---
     
