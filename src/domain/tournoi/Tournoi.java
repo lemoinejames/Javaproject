@@ -205,7 +205,7 @@ public class Tournoi {
         System.out.println("Nombre total d'Aces servis (tous tableaux) : " + totalAces);
         
         // --- NOUVEAU : Écriture des stats des vainqueurs ---
-        if (estTermine()) {
+        if (estTermineHomme()) {
             System.out.println("\n--- FINALISATION : Écriture des Statistiques du Vainqueur ---");
             
             // Vainqueur Hommes
@@ -216,7 +216,11 @@ public class Tournoi {
                 domain.utils.EcritureJSON.ecrireStatsJoueur(vH, cheminH);
                 System.out.println("Vainqueur Hommes : " + vH.getPrenom() + " " + vH.getNomCourant());
             }
-
+            else {
+                System.out.println("\nLe tournoi n'est pas terminé, les statistiques finales ne peuvent pas être écrites.");
+            }
+        }
+        if (estTermineFemme()) {
             // Vainqueur Femmes
             Joueur vF = getVainqueur(Categorie.SIMPLE_FEMMES);
             if (vF != null) {
@@ -225,9 +229,10 @@ public class Tournoi {
                 domain.utils.EcritureJSON.ecrireStatsJoueur(vF, cheminF);
                 System.out.println("Vainqueur Femmes : " + vF.getPrenom() + " " + vF.getNomCourant());
             }
-            } else {
+            else {
                 System.out.println("\nLe tournoi n'est pas terminé, les statistiques finales ne peuvent pas être écrites.");
             }
+        }
     }
 
     private Joueur getVainqueur(Categorie categorie) {
@@ -241,9 +246,13 @@ public class Tournoi {
     }
 
 
-    public boolean estTermine() {
+    public boolean estTermineHomme() {
     // tours.size() correspond à l'index après la FINALE
-    return tourActuelHommes >= tours.size() && tourActuelFemmes >= tours.size();
+    return tourActuelHommes >= tours.size();
+    }
+     public boolean estTermineFemme() {
+    // tours.size() correspond à l'index après la FINALE
+    return  tourActuelFemmes >= tours.size();
     }
 
     // --- Logique interne tournoi ---
