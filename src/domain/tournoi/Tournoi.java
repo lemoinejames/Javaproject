@@ -185,6 +185,9 @@ public class Tournoi {
     /**
      * Affiche un résumé simple du tournoi.
      */
+    /**
+ * Affiche un résumé simple du tournoi et écrit les stats du vainqueur si terminé.
+ */
     public void genererSynthese() {
         System.out.println("\n--- Synthèse du Tournoi ---");
         System.out.println("Nombre total de matchs joués (Hommes): " + tableauHommes.size());
@@ -193,12 +196,54 @@ public class Tournoi {
         
         int totalAces = 0;
         for (Match m : tableauHommes) {
+            // Note: Assurez-vous que Match.getStatsJoueurX() retourne la statistique du match
             totalAces += m.getStatsJoueur1().getNbAces() + m.getStatsJoueur2().getNbAces();
         }
         for (Match m : tableauFemmes) {
             totalAces += m.getStatsJoueur1().getNbAces() + m.getStatsJoueur2().getNbAces();
         }
         System.out.println("Nombre total d'Aces servis (tous tableaux) : " + totalAces);
+        
+        // --- NOUVEAU : Écriture des stats des vainqueurs ---
+        if (estTermine()) {
+            System.out.println("\n--- FINALISATION : Écriture des Statistiques du Vainqueur ---");
+            
+            // Vainqueur Hommes
+            Joueur vH = getVainqueur(Categorie.SIMPLE_HOMMES);
+            if (vH != null) {
+                String cheminH = "src/domain/data/" + ville + annee + "_STATS_" + vH.getNomCourant() + "_H.json";
+                // Appel de la classe utilitaire externe
+                domain.utils.EcritureJSON.ecrireStatsJoueur(vH, cheminH);
+                System.out.println("Vainqueur Hommes : " + vH.getPrenom() + " " + vH.getNomCourant());
+            }
+
+            // Vainqueur Femmes
+            Joueur vF = getVainqueur(Categorie.SIMPLE_FEMMES);
+            if (vF != null) {
+                String cheminF = "src/domain/data/" + ville + annee + "_STATS_" + vF.getNomCourant() + "_F.json";
+                // Appel de la classe utilitaire externe
+                domain.utils.EcritureJSON.ecrireStatsJoueur(vF, cheminF);
+                System.out.println("Vainqueur Femmes : " + vF.getPrenom() + " " + vF.getNomCourant());
+            }
+            } else {
+                System.out.println("\nLe tournoi n'est pas terminé, les statistiques finales ne peuvent pas être écrites.");
+            }
+    }
+
+    private Joueur getVainqueur(Categorie categorie) {
+        List<Match> tableau = (categorie == Categorie.SIMPLE_HOMMES) ? tableauHommes : tableauFemmes;
+        for (Match m : tableau) {
+            if (m.getNiveau() == Niveau.FINALE) {
+                return m.getVainqueur();
+            }
+        }
+        return null; 
+    }
+
+
+    public boolean estTermine() {
+    // tours.size() correspond à l'index après la FINALE
+    return tourActuelHommes >= tours.size() && tourActuelFemmes >= tours.size();
     }
 
     // --- Logique interne tournoi ---

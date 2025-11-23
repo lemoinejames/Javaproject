@@ -19,10 +19,7 @@ import java.util.Map;
 public class LectureJSON {
 
     public static Joueur lectureJSON(String json) {
-        System.out.println("Lecture du JSON : " + json);
         Map<String, String> data = parse(json);
-
-        System.out.println("Données extraites du JSON : " + data);
         // Création du Joueur à partir des valeurs extraites
         return new Joueur(
             data.get("nomNaissance"),
