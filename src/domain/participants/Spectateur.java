@@ -3,10 +3,13 @@ package domain.participants;
 import domain.enums.Genre;
 import java.time.LocalDate;
 
+
 /**
  * Représente un spectateur assistant à un match de tennis.
- * Cette classe hérite de Personne et ajoute des attributs liés à sa place
- * dans les gradins et des actions spécifiques.
+ * Cette classe hérite de Personne et implémente les comportements d'un spectateur (applaudir, huer, etc.).
+ *
+ * @author salah eddine & james
+ * @version 1.0
  */
 public class Spectateur extends Personne implements ComportementSpectateur {
 

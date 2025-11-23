@@ -7,6 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+/**
+ * Utilitaire pour écrire les statistiques des joueurs dans des fichiers JSON.
+ * Permet de sauvegarder les performances de carrière des joueurs.
+ *
+ * @author salah eddine & james
+ * @version 1.0
+ */
 
 public class EcritureJSON {
 

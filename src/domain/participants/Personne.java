@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.time.Period;
 
 /**
+ * Classe abstraite représentant une personne
  * Représente une personne avec ses informations biographiques de base.
  * Cette classe sert de classe mère pour les Joueurs, Arbitres et Spectateurs.
  * Les informations de naissance, de genre et de décès sont immuables après création.
  */
+
 
 public abstract class Personne {
 
@@ -22,8 +24,8 @@ public abstract class Personne {
     private final String lieuNaissance;
     private LocalDate dateDeces; 
     private String nationalite;
-    private int taille; // en cm
-    private int poids; // en kg
+    private int taille;
+    private int poids; 
     private final Genre genre;
     private boolean estMariee;    
     private Personne conjoint;    
